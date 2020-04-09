@@ -1,0 +1,74 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="../Scripts/ajaxCalls.js"></script>
+    <script>
+        function getUserBasedOnPrevEmail() {
+
+            email = document.getElementById("email").value !== undefined ? document.getElementById("email").value : "";
+            password = document.getElementById("password").value !== undefined ? document.getElementById("password").value : "";
+            first_name = document.getElementById("first_name").value !== undefined ? document.getElementById("first_name").value : "";
+            last_name = document.getElementById("last_name").value !== undefined ? document.getElementById("last_name").value : "";
+            phone = document.getElementById("phone").value !== undefined ? document.getElementById("phone").value : "";
+            User = {
+                "Email": email,
+                "Password": password,
+                "First_name": first_name,
+                "Last_name": last_name,
+                "DateTime": "will calculate in BL",
+                "Phone": phone,
+            }
+            ajaxCall("PUT", "../api/User/User", JSON.stringify(User), success, error);
+
+        }
+        function updateUserToDB() { }
+
+        function success(data) {
+
+            alert("succ");
+            console.log(data)
+        }
+
+
+        function error(err) {
+            alert("err");
+            console.log(err)
+        }
+    </script>
+</head>
+<body>
+    <p>
+        user Email --the system shall get this filed from the "sign in" page and will save this field in all the relevant pages--
+    </p>
+    <p>
+        Email :
+        <input id="email" />
+
+    </p>
+    -----Edit Details-----
+   
+    <p>
+        Password  :
+        <input id="password" />
+    </p>
+    <p>
+        first name  :
+        <input id="first_name" />
+    </p>
+    <p>
+        last name  :
+        <input id="last_name" />
+    </p>
+    <p>
+        phone number  :
+        <input id="phone" />
+    </p>
+    <p>
+        <button onclick="getUserBasedOnPrevEmail()">update</button>
+    </p>
+    -----Edit Details-----
+</body>
+</html>

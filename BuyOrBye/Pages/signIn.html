@@ -1,0 +1,77 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <link href="StyleSheet1.css" rel="stylesheet" />
+    <script src="../Scripts/ajaxCalls.js"></script>
+    <script>
+
+        $(document).ready(function () {
+            $("#pForm").submit(f1);
+            $("#btnLogIn").click(logInfunction);
+
+        });
+        function f1() {
+            return false;
+        }
+        function logInfunction() {
+            let email = document.getElementById("login").value;
+            let password = document.getElementById("password").value;
+
+            $.ajax({
+    url: "../api/User/signIn",
+    data: { 
+        "email": email,
+        "password": password
+    },
+    cache: false,
+    type: "GET",
+                success: function (response) {
+                    alert(response);
+    },
+                error: function (xhr) {
+                    alert(xhr)
+    }
+});
+
+        }
+
+        function success(data) {
+            alert(data);
+        }  function error(data) {
+            alert("err");
+        }
+    </script>
+</head>
+
+<body>
+    <div class="wrapper fadeInDown">
+        <div id="formContent">
+            <!-- Tabs Titles -->
+            <h2 class="active"> Sign In </h2>
+            <h2 class="inactive underlineHover">Sign Up </h2>
+
+            <!-- Icon -->
+            <div class="fadeIn first">
+             <br/>
+            </div>
+
+            <!-- Login Form -->
+            <form id="pForm">
+                <input type="text" id="login" class="fadeIn second"  placeholder="login">
+                <input type="text" id="password" class="fadeIn third" placeholder="password">
+                <input type="button" id="btnLogIn"class="fadeIn fourth" value="Log In">
+            </form>
+
+            <!-- Remind Passowrd -->
+            <div id="formFooter">
+                <a class="underlineHover" href="#">Forgot Password?</a>
+            </div>
+
+        </div>
+    </div>
+</body>
+</html>
