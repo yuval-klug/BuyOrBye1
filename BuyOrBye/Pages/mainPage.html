@@ -1,0 +1,69 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="../Scripts/ajaxCalls.js"></script>
+    <script>
+        function getEmail() {
+            let thisEmail = localStorage.getItem("Email")
+            thisEmail = JSON.parse(thisEmail);
+            alert(thisEmail);
+        }
+        function getDecision() {
+            document.location.href = "PicDecision.html";
+
+        } function takeDecision() {
+            document.location.href = "takeDecision.html";
+
+        } function changeDetails() {
+            document.location.href = "profileAccount.html";
+
+        }
+        function createNewGroup() {
+            document.location.href = "GroupPage.html";
+
+        }
+        function createNewIndecision() {
+
+        document.location.href = "createIndecision.html";
+
+        }
+        function CategoryReccomendationAlgo() {
+
+        document.location.href = "ReccomendationAlgo.html";
+
+        }
+
+    </script>
+</head>
+<body>
+    <div>
+        <button onclick="getEmail()">get userEmail</button> <br /><br />
+
+        <p>what would you like to do?</p>
+        <p>-----------done-------------</p>
+        <button onclick="changeDetails()">change details</button><br /><br />
+        <button onclick="takeDecision()">update your final choice</button><br /><br />
+        <button onclick="createNewGroup()">create Group</button><br /><br />
+        <button onclick="takeDecision()">stop indecision</button><br /><br />
+        <button onclick="getDecision()">get decision</button><br /><br />
+        <p>  -  done reccomendation Algo  -  </p>
+        <button onclick="CategoryReccomendationAlgo()">Create Category</button><br /><br />
+        <button onclick="CategoryReccomendationAlgo()">User like 1 Category</button><br /><br />
+        <button onclick="CategoryReccomendationAlgo()">Suggested Category</button><br /><br />
+
+        <p>-----------not done-------------</p>
+        <button onclick="createNewIndecision()">add new indecision</button><br /><br />
+        <button onclick="mydecisions()">my decisions- TBD</button><br /><br />
+        <button onclick="CategoryReccomendationAlgo()">User like multiple Categories</button><br /><br />
+        <p>-----------TBD-------------</p>
+        <p>לשנות את זה שגם אם מוכנס שם משתמש/ססמא לא נכונים זה נותן לעבור לדף הבא למרות שאומר שהפרטים לא נכונים</p>
+        <p>להוסיף את רשימת ההתלבטויות הפתוחות בתוך עצור התלבטות במקום הכנס ID</p>
+        <p>להוסיף את כפתור הכנסת קטגוריה</p>
+        <p>הוספת כפתור יצירת משתמש חדש + בחירת קטגוריה</p>
+
+    </div>
+</body>
+</html>

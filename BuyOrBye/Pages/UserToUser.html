@@ -1,0 +1,124 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="../Scripts/ajaxCalls.js"></script>
+    <title></title>
+    <script>
+
+        function getWeight() {
+            let userSend = document.getElementById("userSend").value;
+            let indecisionNumber = document.getElementById("numOfIndecision").value;
+            let userReceive = document.getElementById("userReceive").value;
+
+
+
+             $.ajax({
+             url: "../api/UserToUser/getWeight",
+             data: {
+                 "userSend": userSend,
+                 "userReceive": userReceive
+                   },
+             cache: false,
+             type: "GET",
+             success: function (response) {
+                    alert(response);
+    },
+             error: function (xhr) {
+                    alert(xhr)
+    }
+});
+
+
+        }
+
+        function getIndecisionResult() {
+            let userSend = document.getElementById("userSend").value;
+            let indecisionNumber = document.getElementById("numOfIndecision").value;
+            indecisionNumber = parseInt(indecisionNumber);
+
+                        $.ajax({
+             url: "../api/UserToUser/getAnswerPerDecision",
+             data: {
+                 "userSend": userSend,
+                 "IndecisionID": indecisionNumber
+                   },
+             cache: false,
+             type: "GET",
+             success: function (response) {
+                    alert(response);
+    },
+             error: function (xhr) {
+                    alert(xhr)
+    }
+});
+
+
+        }
+
+        function options(trueOrFalse) {
+             let thisEmail = localStorage.getItem("Email")
+            thisEmail = JSON.parse(thisEmail);
+            let userSend = thisEmail;
+            let indecisionNumber = document.getElementById("numOfIndecision").value;
+            finalOption = trueOrFalse;
+
+          
+
+
+               $.ajax({
+                url:"../api/UserToUser/changeWeight",
+                data: { 
+                 "UserSend": userSend,
+                 "IndecisionID": indecisionNumber,
+                 "Final_answer": finalOption
+                     },
+                cache: false,
+                type: "GET",
+                success: function (response) {
+                    alert(response);
+                },
+                error: function (xhr) {
+                    alert(xhr)
+                }
+                });
+             
+        }
+
+       
+    </script>
+</head>
+<body>
+    <div>
+        <p>
+            ----this page is draft od take decision page------
+            --shall get this details from the client?-- <br />
+            user that send the indecision:
+        </p>
+        <p>
+            <input id="userSend" />
+        </p>  <p>
+            number of indecision:
+        </p>
+        <p>
+            <input id="numOfIndecision" />
+        </p>
+        <p>
+            ------------     <br />
+            user that receive the indecision:
+        </p>
+        <p>
+            <input id="userReceive" />
+        </p>
+        <button onclick="getWeight()">get the currect users:</button>
+        <button onclick="getIndecisionResult()">get the result of all the indecision</button>
+
+    </div>
+    <div>
+        <p>what is your final decision?</p>
+        <button  onclick="options(true)">option1</button>
+        <button onclick="options(false)">option2</button>
+    </div>
+</body>
+</html>
