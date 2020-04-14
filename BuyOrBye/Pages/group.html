@@ -1,0 +1,41 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="../Scripts/ajaxCalls.js"></script>
+    <script>
+                function getGroupFromDB() {
+                 ajaxCall("GET", `../api/Group`, "", success, error);
+                    }
+          
+
+
+          //post//
+        function insertGroupToDB() {
+            email = document.getElementById("email").value;
+            groupName = document.getElementById("groupname").value;
+            Group = {
+                "User_manager": email,
+                "Group_name": groupName
+           
+            }
+            ajaxCall("POST", "../api/Group", JSON.stringify(Group), success, error);
+        }
+    </script>
+</head>
+<body>
+    <div>
+        <p>
+            add new group:
+        </p>
+        <p>group name</p>
+        <input id="groupName"/>
+        <p>user create -shall get from the "sign in" page</p>
+        <input id="email"/>
+
+
+    </div>
+</body>
+</html>

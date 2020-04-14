@@ -378,7 +378,11 @@ public class DBservices
 
 
     //POST Group (start)//
+<<<<<<< HEAD
+    public int InsertUserInGroup(Group group)
+=======
     public int InsertUserInGroup(UserInGroup userInGroup)
+>>>>>>> d6ea44552777b9a58bcf474e90ce61378d55f628
     {
 
         SqlConnection con;
@@ -394,7 +398,11 @@ public class DBservices
             throw (ex);
         }
 
+<<<<<<< HEAD
+        String cStr = BuildInsertCommandUserInGroup(group);      // helper method to build the insert string
+=======
         String cStr = BuildInsertCommandUserInGroup(userInGroup);      // helper method to build the insert string
+>>>>>>> d6ea44552777b9a58bcf474e90ce61378d55f628
 
         cmd = CreateCommand(cStr, con);             // create the command
 
@@ -420,13 +428,21 @@ public class DBservices
         }
 
     }
+<<<<<<< HEAD
+    private String BuildInsertCommandUserInGroup(Group group)
+=======
     private String BuildInsertCommandUserInGroup(UserInGroup userInGroup)
+>>>>>>> d6ea44552777b9a58bcf474e90ce61378d55f628
     {
         String command1;
 
         StringBuilder sb1 = new StringBuilder();
         // use a string builder to create the dynamic string
+<<<<<<< HEAD
+        sb1.AppendFormat("Values('{0}', '{1}')", group.User_manager, group.Group_ID);
+=======
         sb1.AppendFormat("Values('{0}', '{1}')", userInGroup.User_email, userInGroup.Group_groupID);
+>>>>>>> d6ea44552777b9a58bcf474e90ce61378d55f628
         String prefix1 = "INSERT INTO buyOrBye_userInGroup (user_manager,group_groupID)";
         command1 = prefix1 + sb1.ToString();
         return command1;
@@ -525,7 +541,11 @@ public class DBservices
     }
 
 
+<<<<<<< HEAD
+    //sign in
+=======
     //sign in get
+>>>>>>> d6ea44552777b9a58bcf474e90ce61378d55f628
     public string isSignInSuccBL(string email, string password)
     {
         List<User> UserList = new List<User>();
@@ -783,6 +803,16 @@ public class DBservices
         String command1;
         StringBuilder sb1 = new StringBuilder();
         // use a string builder to create the dynamic string
+<<<<<<< HEAD
+        sb1.AppendFormat("Values('{0}', '{1}' ,'{2}','{3}','{4}','{5}','{6}','{7}')", indecision.Group_groupID,indecision.User_email, indecision.Description_, indecision.Img1, indecision.Img2,indecision.Final_answer, indecision.Percent_option1, indecision.Percent_option2);
+        String prefix1 = "INSERT INTO buyOrBye_Indecision ( group_groupID, user_email, description_, img1, img2, final_answer, percent_option1, percent_option2)";
+        command1 = prefix1 + sb1.ToString();
+        return command1;
+    }
+
+    //update user account
+    public DBservices readUserAccountDAL()
+=======
         sb1.AppendFormat("Values('{0}', '{1}' ,'{2}','{3}','{4}','{5}','{6}')",indecision.Group_groupID,indecision.User_email, indecision.Description_, indecision.Img1, indecision.Img2,indecision.Final_answer, indecision.CurrectAnswerPercent);
         String prefix1 = "INSERT INTO buyOrBye_Indecision (group_groupID, user_email, description_, img1, img2, final_answer, currectAnswerPercent)";
         command1 = prefix1 + sb1.ToString();
@@ -987,11 +1017,15 @@ public class DBservices
 
     //update userToUserTable
     public DBservices updateTableUserToUser(string userSend,DataTable dt)
+>>>>>>> d6ea44552777b9a58bcf474e90ce61378d55f628
     {
         SqlConnection con = null;
         try
         {
             con = connect("flightsDBConnectionString");
+<<<<<<< HEAD
+            da = new SqlDataAdapter("select * from buyOrBye_User", con);
+=======
             da = new SqlDataAdapter("select * from buyOrBye_UserToUser utu where utu.user_emailSend='"+ userSend + "'", con);
             SqlCommandBuilder builder = new SqlCommandBuilder(da);
             DataSet ds = new DataSet();
@@ -1026,6 +1060,7 @@ public class DBservices
         {
             con = connect("flightsDBConnectionString");
             da = new SqlDataAdapter("select * from buyOrBye_UserToUser utu where utu.user_emailSend='"+userSend+"'", con);
+>>>>>>> d6ea44552777b9a58bcf474e90ce61378d55f628
             SqlCommandBuilder builder = new SqlCommandBuilder(da);
             DataSet ds = new DataSet();
             da.Fill(ds);
@@ -1053,6 +1088,8 @@ public class DBservices
     }
 
 
+<<<<<<< HEAD
+=======
     // get users that find in the phone string
     public List<User> createNewGroupDB(string phoneNumbers)
     {
@@ -1704,6 +1741,7 @@ public class DBservices
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //////////////////////////////// Similarity Paired DAL END //////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////
+>>>>>>> d6ea44552777b9a58bcf474e90ce61378d55f628
 }
 
 

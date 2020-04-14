@@ -25,6 +25,8 @@ namespace BuyOrBye.Controllers
 
         }
 
+<<<<<<< HEAD
+=======
         //get all the ID that match to the group name
         [HttpGet]
         [Route("api/Group/GroupNameString")]
@@ -46,6 +48,7 @@ namespace BuyOrBye.Controllers
         }
 
 
+>>>>>>> d6ea44552777b9a58bcf474e90ce61378d55f628
 
     }
 }

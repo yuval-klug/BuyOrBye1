@@ -43,6 +43,8 @@ namespace BuyOrBye.Models
             return numAffected;
         }
 
+<<<<<<< HEAD
+=======
         //get the group id that match the group name
         
         public int getGroupid(string UserSend,string group_Name)
@@ -65,6 +67,7 @@ namespace BuyOrBye.Models
 
         
 
+>>>>>>> d6ea44552777b9a58bcf474e90ce61378d55f628
 
 
 
