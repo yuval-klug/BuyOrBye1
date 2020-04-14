@@ -244,6 +244,8 @@
     <Content Include="Scripts\jquery-3.4.1.slim.js" />
     <Content Include="Scripts\jquery-3.4.1.slim.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="uploadedFiles\Capture001.png" />
+    <Content Include="uploadedFiles\Site.css" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -261,7 +263,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="uploadedFiles\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
