@@ -164,6 +164,7 @@
     <Compile Include="Controllers\algoCategoryController.cs" />
     <Compile Include="Controllers\algoSimilarity_pairedController.cs" />
     <Compile Include="Controllers\algoUser_CategoryController.cs" />
+    <Compile Include="Controllers\FileUploadController.cs" />
     <Compile Include="Controllers\UserInIndecisionController.cs" />
     <Compile Include="Controllers\UserToUserController.cs" />
     <Compile Include="Controllers\IndecisionController.cs" />
@@ -260,6 +261,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="uploadedFiles\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
