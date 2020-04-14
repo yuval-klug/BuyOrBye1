@@ -49,23 +49,20 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
-<<<<<<< HEAD
-=======
+
     <Reference Include="System.Web.Cors, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.Cors.5.2.7\lib\net45\System.Web.Cors.dll</HintPath>
     </Reference>
->>>>>>> d6ea44552777b9a58bcf474e90ce61378d55f628
+
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.DataSetExtensions" />
-<<<<<<< HEAD
-=======
     <Reference Include="System.Web.Http.Cors, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.WebApi.Cors.5.2.7\lib\net45\System.Web.Http.Cors.dll</HintPath>
     </Reference>
->>>>>>> d6ea44552777b9a58bcf474e90ce61378d55f628
+
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Abstractions" />
@@ -167,15 +164,14 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\SampleDirection.cs" />
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
-<<<<<<< HEAD
-=======
+
     <Compile Include="Controllers\algoCategoryController.cs" />
     <Compile Include="Controllers\algoSimilarity_pairedController.cs" />
     <Compile Include="Controllers\algoUser_CategoryController.cs" />
     <Compile Include="Controllers\FileUploadController.cs" />
     <Compile Include="Controllers\UserInIndecisionController.cs" />
     <Compile Include="Controllers\UserToUserController.cs" />
->>>>>>> d6ea44552777b9a58bcf474e90ce61378d55f628
+
     <Compile Include="Controllers\IndecisionController.cs" />
     <Compile Include="Controllers\UserInGroupController .cs" />
     <Compile Include="Controllers\GroupController.cs" />
@@ -186,10 +182,10 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-<<<<<<< HEAD
+
     <Compile Include="Models\Category.cs" />
     <Compile Include="Models\DAL\DBservices.cs" />
-=======
+
     <Compile Include="Models\algoCategory.cs" />
     <Compile Include="Models\algoSimilarity_paired.cs" />
     <Compile Include="Models\algoUser_Category.cs" />
@@ -197,7 +193,7 @@
     <Compile Include="Models\DAL\DBservices.cs" />
     <Compile Include="Models\UserInIndecision.cs" />
     <Compile Include="Models\UserToUser.cs" />
->>>>>>> d6ea44552777b9a58bcf474e90ce61378d55f628
+
     <Compile Include="Models\Indecision.cs" />
     <Compile Include="Models\UserInGroup.cs" />
     <Compile Include="Models\Group.cs" />
@@ -213,10 +209,10 @@
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
-<<<<<<< HEAD
+
     <Content Include="Pages\group.html" />
     <Content Include="Pages\profileAccount.html" />
-=======
+
     <Content Include="Pages\createIndecision.html" />
     <Content Include="Pages\GroupPage.html" />
     <Content Include="Pages\createNewGroup.html" />
@@ -226,17 +222,16 @@
     <Content Include="Pages\profileAccount.html" />
     <Content Include="Pages\ReccomendationAlgo.html" />
     <Content Include="Pages\sql.html" />
->>>>>>> d6ea44552777b9a58bcf474e90ce61378d55f628
+
     <Content Include="Pages\SqlTables.html" />
     <Content Include="Pages\index.html" />
     <Content Include="Pages\signInJS.js" />
     <Content Include="Pages\signIn.html" />
     <Content Include="Pages\StyleSheet1.css" />
-<<<<<<< HEAD
-=======
+
     <Content Include="Pages\takeDecision.html" />
     <Content Include="Pages\UserToUser.html" />
->>>>>>> d6ea44552777b9a58bcf474e90ce61378d55f628
+
     <Content Include="Scripts\ajaxCalls.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -259,10 +254,9 @@
     <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\CollectionModelDescription.cshtml" />
     <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\ApiGroup.cshtml" />
     <Content Include="Areas\HelpPage\Views\Help\Api.cshtml" />
-<<<<<<< HEAD
-=======
+
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
->>>>>>> d6ea44552777b9a58bcf474e90ce61378d55f628
+
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
