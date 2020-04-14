@@ -1,0 +1,327 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+
+    <title>Phone Book App</title>
+
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="../Scripts/ajaxCalls.js"></script>
+    <style type="text/css">
+        td {
+            width: 200px;
+        }
+
+        img {
+            height: 150px;
+        }
+    </style>
+    <script>
+        let category_name = "";
+        let numberOfUse = "";
+        let email = "";
+        let password = "";
+        let first_name = "";
+        let last_name = "";
+        let dateTime = "";
+        let phone = "";
+
+    
+
+      
+//CATEGORY - get and post// 
+            //get//
+            function getCategoryFromDB() {
+                ajaxCall("GET", `../api/Category`, "", success, error);
+            }
+            //put//
+            //function put - not done yet() {
+
+            //Category = {
+            //    "Category_name": category_name,
+            //    "NumberOfUse": numberOfUse
+
+            //}
+            //ajaxCall("PUT", "../api/Category/Category", JSON.stringify(Category), success, error);
+
+            //}
+            //post//
+            function insertCategoryToDB() {
+
+
+                category_name = document.getElementById("category_name").value;
+                numberOfUse = document.getElementById("numberOfUse").value;
+
+        
+            Category = {
+                  "Category_name": category_name,
+                  "NumberOfUse": numberOfUse
+              }
+            ajaxCall("POST", "../api/Category", JSON.stringify(Category), success, error);
+
+        }
+   
+//USER - get and post//
+
+            //get//
+
+            function getUserFromDB() {
+                ajaxCall("GET", `../api/User`, "", success, error);
+            }
+            //post//
+
+            function insertUserToDB() {
+            email = document.getElementById("email").value;
+            password = document.getElementById("password").value;
+            first_name = document.getElementById("first_name").value;
+            last_name = document.getElementById("last_name").value;
+            phone = document.getElementById("phone").value;
+            User = {
+                "Email": email,
+                "Password": password,
+                "First_name": first_name,
+                "Last_name": last_name,
+                "DateTime": "will calculate in BL",
+                "Phone": phone,
+
+            }
+            ajaxCall("POST", "../api/User", JSON.stringify(User), success, error);
+        }
+//GROUP - get and post//
+
+        //get//
+        function getGroupFromDB() {
+                 ajaxCall("GET", `../api/Group`, "", success, error);
+                    }
+          
+
+
+          //post//
+        function insertGroupToDB() {
+            UserManager = document.getElementById("User_manager").value;
+            GroupID = document.getElementById("Group_ID").value;
+            Group = {
+                "User_manager": UserManager,
+                "Group_ID": GroupID
+
+            }
+            ajaxCall("POST", "../api/Group", JSON.stringify(Group), success, error);
+        }
+
+        //Indesition -  post//
+
+        
+            //post//
+
+            function insertIndecisionToDB() {
+            email = document.getElementById("email11").value;
+            groupID = document.getElementById("group_id").value;
+            description = document.getElementById("description").value;
+            img1 = document.getElementById("img1").value;
+            img2 = document.getElementById("img2").value;
+            percent_option1 = document.getElementById("percent_option1").value;
+            percent_option2 = document.getElementById("percent_option2").value;
+            final_answer = document.getElementById("final_answer").value;
+
+                Indecision = {
+                    "IndecisionID" : 1,
+                    "group_groupID": groupID,
+                    "user_email": email,
+                    "description": description,
+                    "img1": img1,
+                    "img2": img2,
+                    "final_answer": final_answer,
+                    "percent_option1": percent_option1,
+                    "percent_option2": percent_option2,
+              
+            }
+                ajaxCall("POST", "../api/Indecision", JSON.stringify(Indecision), success, error);
+
+        }
+
+            //get//
+
+        function getIndecisionFromDB() {
+
+                        ajaxCall("GET", `../api/Indecision`, "", success, error);
+
+        }
+
+        //User and Category - update//
+        function updateUserAndCategory(email,categoryid) {
+
+            User = {
+                Category_id: categoryid,
+                Email: email,
+                    }
+            ajaxCall("PUT", "../api/User/UserAndCategory", JSON.stringify(User), success, error);
+
+        }
+
+        //user in group - post and get
+
+        //post
+        function insertUserInGroupToDB() {
+            UserManager = document.getElementById("UserGroup_manager").value;
+            GroupID = document.getElementById("Group_ID").value;
+            weight= document.getElementById("weight").value;
+            UserInGroup = {
+                "user_email": UserManager,
+                "group_groupID": GroupID,
+                "weight" : weight
+
+            }
+            ajaxCall("POST", "../api/UserInGroup", JSON.stringify(UserInGroup), success, error);
+        }
+
+        //get
+
+        function getUserInGroupFromDB() {
+        ajaxCall("GET", `../api/UserInGroup`,"", success, error);
+        }
+        
+        function success(data) {
+            console.log("all data", data);
+        }
+        function error(err) {
+            console.log("err", err);
+        }
+
+    </script>
+</head>
+
+<body>
+
+    <div>
+        <div>
+        -----USER-----
+            <p>
+            Email :
+                <input id="email" />
+            </p>
+            <p>
+                Password  :
+                <input id="password" />
+            </p>
+            <p>
+                first name  :
+                <input id="first_name" />
+            </p>
+            <p>
+                last name  :
+                <input id="last_name" />
+            </p>
+            <p>
+                phone number  :
+                <input id="phone" />
+            </p>
+            <p>
+                <button onclick="insertUserToDB()">insert to DB</button>
+                <button onclick="getUserFromDB()">get from DB</button>
+            </p>
+        -----USER-----
+        <br/><br /><br /><br /><br />
+            
+        </div>  
+        <div>
+        -----CATEGORY-----
+            <p>
+                Category Name :
+                <input id="category_name" />
+            </p>
+            <p>
+                Number Of Use  :
+                <input id="numberOfUse" />
+            </p>
+            <p>
+                <button onclick="insertCategoryToDB()">insert to DB</button>
+                <button onclick="getCategoryFromDB()">get from DB</button>
+            </p>
+        -----CATEGORY-----
+
+        </div>
+        <div>
+        -----Group-----
+             <p>
+                        User manager :
+                        <input id="User_manager" />
+                    </p>
+             <p>
+                        Group ID  :
+                        <input id="userGroup_ID" />
+                    </p>
+             <p>
+                        <button onclick="insertGroupToDB()">insert to DB</button>
+                        <button onclick="getGroupFromDB()">get from DB</button>
+                    </p>
+        -----Group-----
+             <br/><br/>
+        </div>    
+        
+        <div>
+        -----User in Group-----
+             <p>
+                        User manager :
+                        <input id="UserGroup_manager" />
+                    </p>
+             <p>
+                        Group ID  :
+                        <input id="Group_ID" />
+                    </p>  <p>
+                    weight_  :
+                    <input id="weight" />
+</p>
+             <p>
+                        <button onclick="insertUserInGroupToDB()">insert to DB</button>
+                        <button onclick="getUserInGroupFromDB()">get from DB</button>
+                    </p>
+        -----User in Group-----
+             <br/><br/>
+        </div> 
+        <div>
+         -----Indecision-----
+             <p>
+                email (user wit te same email need to be exist in te DB):
+                <input id="email11" />
+            </p>
+             <p>
+                        group_id  :
+                        <input id="group_id" />
+                    </p>
+             <p>
+                        description  :
+                        <input id="description" />
+                    </p>
+             <p>
+                        img1  :
+                        <input id="img1" />
+                    </p> 
+             <p>
+                        img2  :
+                        <input id="img2" />
+                    </p>
+              <p>
+                        percent_option1  :
+                        <input id="percent_option1" />
+                    </p> 
+             <p>
+                        percent_option2  :
+                        <input id="percent_option2" />
+                    </p>
+             <p>
+                        final_answer  :
+                        <input id="final_answer" />
+                    </p>
+             <p>
+                        <button onclick="insertIndecisionToDB()">insert to DB</button>
+                        <button onclick="getIndecisionFromDB()">get from DB</button>
+                    </p>
+        -----Indecision-----
+             <br/><br/>
+        </div>
+    </div>
+</body>
+</html>
+

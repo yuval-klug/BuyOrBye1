@@ -1,0 +1,159 @@
+﻿<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="../Scripts/ajaxCalls.js"></script>
+    <style>
+
+    </style>
+    <script>
+        /////// Category Creation Start //////////////
+        function createNewCategory() {
+            console.log("Inside Category Creation");
+
+            algoCategory = {
+                "category_name": document.getElementById("cat_name").value,
+                "key_1": document.getElementById("key_1").value,
+                "key_2": document.getElementById("key_2").value,
+                "key_3": document.getElementById("key_3").value,
+            }
+            ajaxCall("POST", "../api/algoCategory", JSON.stringify(algoCategory), success, error); //QQQ Change Path
+
+        }
+
+        function success(data) {
+            console.log("all data", data);
+        }
+
+        function error(err) {
+            console.log("err", err);
+        }
+
+        /////// Category Creation End //////////////
+
+        /////// User_Category Decision Start (One Option) //////////////
+        function sendLikedCategory() {
+            chosenCat = document.getElementById('categories').value;
+            email = "test100@test.com"; // **Need to get this email from Loacal Stogate
+
+           console.log("Alegedly send category, " + chosenCat + " has been chosen. , with the following user: " + email);
+
+            algoUser_Category = {
+                "category_name": chosenCat,
+                "user_email": email,
+            }
+            ajaxCall("POST", "../api/algoUser_Category", JSON.stringify(algoUser_Category), success, error); //QQQ Change Path
+        }
+
+        /////// User_Category Decision End (One Option) //////////////
+
+        /////// User_Category Decision Start (Many Option) //////////////
+
+        /////// User_Category Decision End (Many Option) //////////////
+
+        /////// Similarity Paired Alert Start (Many Option) //////////////
+
+        function getalgoSimilarity_pairedFromDB() {
+                ajaxCall("GET", `../api/algoSimilarity_paired`, "", Getsuccess, Geterror);
+        }
+
+        function Getsuccess(paireddata) {
+            console.log("all data", paireddata);
+            maxMone = 1; //mone
+            mehaneCounter = 0; //mehane
+            userLikedCategory = document.getElementById('categories').value; //liked category
+            suggestedCat = "";
+
+            for (var i = 0; i < paireddata.length; i++) {
+                if (paireddata[i].Category_name == userLikedCategory)  //finds all the Category name that the user likes(to attch a paired category after)
+                {
+                    mehaneCounter++;
+                    if (maxMone < paireddata[i].Pair_counter) { //if the finds heigher counter
+                        maxMone = paireddata[i].Pair_counter; // increase mone 
+                        suggestedCat = paireddata[i].Category_paired; //assign suggested category
+                    } 
+                }
+            }
+
+            if (suggestedCat == "") { // assign RANDOM paired category if all the ranks are equal
+                //switch case goes here
+                randomPaired = paireddata[Math.floor(Math.random() * paireddata.length)].Category_paired;
+                suggestedCat = randomPaired; 
+                if (suggestedCat == userLikedCategory) { //ex Art=Art
+                    suggestedCat = paireddata[Math.floor(Math.random() * paireddata.length)].Category_paired; //Decrease the chance to sam category by N^2
+                        if (suggestedCat == userLikedCategory) { //ex Art=Art
+                            suggestedCat = paireddata[Math.floor(Math.random() * paireddata.length)].Category_paired; //Decrease the chance to sam category by N^3
+                        }
+                }
+            }
+
+            finalVal = (maxMone/mehaneCounter) // AND/ALL
+
+            console.log("Travel value is: " + finalVal)
+
+            document.getElementById("suggestedCategory").innerHTML = suggestedCat;
+            document.getElementById("suggestedCategoryRank").innerHTML = finalVal;
+        }
+
+        function Geterror(err) {
+            console.log("err", err);
+        }
+
+        /////// Similarity Paired Alert End (Many Option) //////////////
+    </script>
+</head>
+<body>
+    <!--Category Creation Start-->
+    <h1>Create Category</h1>
+    <p>
+        Category Name :
+        <input id="cat_name" />
+    </p>
+    <p>
+        Keyword 1 :
+        <input id="key_1" />
+    </p>
+    <p>
+        Keyword 2 :
+        <input id="key_2" />
+    </p>
+    <p>
+        Keyword 3 :
+        <input id="key_3" />
+    </p>
+    <button onclick="createNewCategory()">Create New Category</button>
+    <h3>--------------------------------------</h3>
+    <!--Category Creation End-->
+    <!--User_Category Decision Start-->
+    <h1>Choose The Category That You Like</h1>
+    <form>
+        <select id="categories">
+            <option value="Art">Art</option>
+            <option value="Travel">Travel</option>
+            <option value="Movies">Movies</option>
+            <option value="Food">Food</option>
+        </select>
+    </form><br />
+    <button onclick="sendLikedCategory()">Set Your Favorite Category</button>
+
+    <br /><br /><br />
+    צריכים לחבר פה את היוזר מהלוקאל סטורג, כרגע רשמתי ידנית
+    <h3>--------------------------------------</h3>
+    <!--User_Category Decision End-->
+    <!--Similarity Paired Alert Start-->
+    <h1>Suggested Category</h1>
+    <button onclick="getalgoSimilarity_pairedFromDB()">Click to get the Suggested Category</button>
+    <p>
+        Suggested Category is :
+    <p id="suggestedCategory">N/A<p />
+    </p>
+    <p>
+        Rank with the value :
+    <p id="suggestedCategoryRank">N/A<p />
+    </p>
+    <h3>--------------------------------------</h3>
+    <!--Similarity Paired Alert End-->
+</body>
+</html>

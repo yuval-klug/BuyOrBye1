@@ -1,0 +1,80 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="../Scripts/ajaxCalls.js"></script>
+    <script>
+        let selectInto = "";
+        function moveToCreateNewGroup() {
+            document.location.href = "GroupPage.html";
+
+        }
+
+        function insertIndecisionToDB() {
+            email = localStorage.getItem("Email")
+            email = JSON.parse(email);
+
+            groupID = document.getElementById("groups").value;
+            description = document.getElementById("description").value;
+            img1 = document.getElementById("img1").value;
+            img2 = document.getElementById("img2").value;
+          
+
+                Indecision = {
+                    "Group_groupID": groupID,
+                    "User_email": email,
+                    "Description_": description,
+                    "Img1": img1,
+                    "Img2": img2,
+                    "Final_answer": "",
+                    "CurrectAnswerPercent":""
+              
+            }
+                ajaxCall("POST", "../api/Indecision", JSON.stringify(Indecision), successPost, error);
+
+        }
+
+        function init() {
+            let thisEmail = localStorage.getItem("Email")
+            thisEmail = JSON.parse(thisEmail);
+            ajaxCall("GET", `../api/Group`, "User_manager=" + thisEmail + "", success, error);
+        }
+
+        function successPost(data) {
+            console.log(data);
+        }
+
+        function success(data) {
+            console.log(data);
+            selectInto = `<select id="groups"> <option value="0">select group</option>`;
+            for (var group in data) {
+                selectInto += ` <option value="${data[group].Group_ID}">${data[group].Group_name}</option>`
+
+            }
+            selectInto += `</select>`
+
+            document.getElementById("insertGroup").innerHTML += selectInto;
+        }
+        function error(data) {
+            console.log(data)
+        }
+
+
+    </script>
+</head>
+<body onload="init()">
+    <label for="groups">your group:</label>
+    <p id="insertGroup">
+    </p>
+    <p> Description</p>
+    <input id="description"/>  
+    <p> img1</p>
+    <input id="img1"/>  
+    <p> img 2</p>
+    <input id="img2"/><br /><br />
+    <button onclick="moveToCreateNewGroup()"> create new group</button>
+    <button onclick="insertIndecisionToDB()">send indecision</button>
+</body>
+</html>
