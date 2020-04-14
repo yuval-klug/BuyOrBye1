@@ -8,11 +8,23 @@
     <script>
         function getUserBasedOnPrevEmail() {
 
+<<<<<<< HEAD
             email = document.getElementById("email").value !== undefined ? document.getElementById("email").value : "";
             password = document.getElementById("password").value !== undefined ? document.getElementById("password").value : "";
             first_name = document.getElementById("first_name").value !== undefined ? document.getElementById("first_name").value : "";
             last_name = document.getElementById("last_name").value !== undefined ? document.getElementById("last_name").value : "";
             phone = document.getElementById("phone").value !== undefined ? document.getElementById("phone").value : "";
+=======
+            let thisEmail = localStorage.getItem("Email")
+             thisEmail = JSON.parse(thisEmail);
+            
+
+            let email = thisEmail;
+           let password = document.getElementById("password").value !== undefined ? document.getElementById("password").value : "";
+           let first_name = document.getElementById("first_name").value !== undefined ? document.getElementById("first_name").value : "";
+           let last_name = document.getElementById("last_name").value !== undefined ? document.getElementById("last_name").value : "";
+           let phone = document.getElementById("phone").value !== undefined ? document.getElementById("phone").value : "";
+>>>>>>> d6ea44552777b9a58bcf474e90ce61378d55f628
             User = {
                 "Email": email,
                 "Password": password,
@@ -40,6 +52,7 @@
     </script>
 </head>
 <body>
+<<<<<<< HEAD
     <p>
         user Email --the system shall get this filed from the "sign in" page and will save this field in all the relevant pages--
     </p>
@@ -50,6 +63,11 @@
     </p>
     -----Edit Details-----
    
+=======
+
+    -----Edit Details (the email stored in local storage)
+
+>>>>>>> d6ea44552777b9a58bcf474e90ce61378d55f628
     <p>
         Password  :
         <input id="password" />

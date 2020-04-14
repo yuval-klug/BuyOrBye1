@@ -22,6 +22,7 @@
             let password = document.getElementById("password").value;
 
             $.ajax({
+<<<<<<< HEAD
     url: "../api/User/signIn",
     data: { 
         "email": email,
@@ -32,6 +33,22 @@
                 success: function (response) {
                     alert(response);
     },
+=======
+                url: "../api/User/signIn",
+                data: { 
+                "email": email,
+                 "password": password
+                        },
+                cache: false,
+                        type: "GET",
+                success: function (response) {
+                    alert(response);
+                 let sendEmail = JSON.stringify(email);
+                    localStorage.setItem("Email", sendEmail);
+                    document.location.href = "mainPage.html";
+
+                },
+>>>>>>> d6ea44552777b9a58bcf474e90ce61378d55f628
                 error: function (xhr) {
                     alert(xhr)
     }

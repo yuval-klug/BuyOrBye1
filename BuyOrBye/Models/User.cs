@@ -137,6 +137,18 @@ namespace BuyOrBye.Models
             return dbs.isSignInSuccBL(email, password);
         }
 
+<<<<<<< HEAD
+=======
+
+        //get all the users that exist in the list that the user send
+        
+        public List<User> createNewGroupModel(string phoneNumbers)
+        {
+
+            DBservices dbs = new DBservices();
+            return dbs.createNewGroupDB(phoneNumbers);
+        }
+>>>>>>> d6ea44552777b9a58bcf474e90ce61378d55f628
         //update user account
         public int updateUserAccount(User user)
         {
@@ -147,7 +159,10 @@ namespace BuyOrBye.Models
             dbs.update();
             return 0;
         }
+<<<<<<< HEAD
 
+=======
+>>>>>>> d6ea44552777b9a58bcf474e90ce61378d55f628
         public DataTable updateUserAccountModel(User user, DataTable dt)
         {
             foreach (DataRow dr in dt.Rows)
@@ -157,11 +172,19 @@ namespace BuyOrBye.Models
                 if (thisName == user.Email)
                 {
                     if (user.First_name != "")
+<<<<<<< HEAD
                         dr["first_name"] = (string)(user.First_name); 
                     if (user.Last_name != "")
                         dr["last_name"] = (string)(user.Last_name); 
                     if (user.Password != "")
                         dr["user_password"] = (string)(user.Password); 
+=======
+                        dr["first_name"] = (string)(user.First_name);
+                    if (user.Last_name != "")
+                        dr["last_name"] = (string)(user.Last_name);
+                    if (user.Password != "")
+                        dr["user_password"] = (string)(user.Password);
+>>>>>>> d6ea44552777b9a58bcf474e90ce61378d55f628
                     if (user.Phone != "")
                         dr["Phone"] = (string)(user.Phone);
 
@@ -175,7 +198,10 @@ namespace BuyOrBye.Models
 
 
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> d6ea44552777b9a58bcf474e90ce61378d55f628
     }
 
 }

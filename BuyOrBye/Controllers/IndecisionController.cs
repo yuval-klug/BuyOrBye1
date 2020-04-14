@@ -22,7 +22,19 @@ namespace BuyOrBye.Controllers
             indecision.InsertIndecision();
 
         }
+<<<<<<< HEAD
 
+=======
+        [HttpGet]
+        [Route("api/Indecision/getIndecisionByUserEmail")]
+        public List<Indecision> Get(string userSend)
+        {
+            Indecision inde = new Indecision();
+
+            return inde.ReadIndecision(userSend);
+        }
+        
+>>>>>>> d6ea44552777b9a58bcf474e90ce61378d55f628
 
 
     }

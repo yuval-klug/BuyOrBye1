@@ -1,0 +1,56 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="../Scripts/ajaxCalls.js"></script>
+    <meta charset="utf-8" />
+    <title></title>
+    <script>
+        
+            let openDecision = "";
+            let closeDecision = "";
+        function init() {
+
+       let userSend = localStorage.getItem("Email")
+           userSend = JSON.parse(userSend);
+
+            ajaxCall("GET", `../api/Indecision/getIndecisionByUserEmail`, "UserSend=" + userSend, success, error);
+
+        
+
+        }
+        function success(data) {
+
+            console.log(data);
+            for (var user in data) {
+                if (data[user].CurrectAnswerPercent != 0) {
+                    let desc1 = data[user].Description_;
+                    let addDesc1 = '<div> <p> description :</p>' + desc1 + '<p> final decision TBD-the chosen img:</p> </div>';
+                    closeDecision += addDesc;
+
+                }
+                else if (data[user].CurrectAnswerPercent == 0) {
+                    let desc = data[user].Description_;
+                    let addDesc = '<div> <p> description :' + desc + '</p><p> stop decision TBD-connected to "stop decision":</p> </div>';
+                    openDecision += addDesc;                 
+
+                }
+
+
+            }
+            document.getElementById("closedec").innerHTML = closeDecision;
+            document.getElementById("openedec").innerHTML = openDecision;
+
+        }
+
+        function error(err) {
+            console.log(err);
+        }
+
+    </script>
+</head>
+<body onload="init()">
+    <div id="opendec"></div>
+    <div id="closedec"></div>
+</body>
+</html>

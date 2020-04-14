@@ -33,7 +33,11 @@ namespace BuyOrBye.Controllers
 
         }
 
+<<<<<<< HEAD
         //put User And Category --not necessary??
+=======
+        //put User And Category
+>>>>>>> d6ea44552777b9a58bcf474e90ce61378d55f628
         [HttpPut]
         [Route("api/User/UserAndCategory")]
         public int CountryUp(User user)
@@ -56,6 +60,22 @@ namespace BuyOrBye.Controllers
 
         }
 
+<<<<<<< HEAD
+=======
+        //get all the users that exist in the list that the user send
+        [HttpGet]
+        [Route("api/User/phoneNumbersString")]
+        public List<User> Get(string phoneNumber)
+        {
+
+            User createNewGroup = new User();
+
+            return createNewGroup.createNewGroupModel(phoneNumber);
+
+
+        }
+
+>>>>>>> d6ea44552777b9a58bcf474e90ce61378d55f628
         [HttpPut]
         [Route("api/User/{User}")]
         public int updateUserAccount(User user)
@@ -65,10 +85,13 @@ namespace BuyOrBye.Controllers
         }
 
 
+<<<<<<< HEAD
 
 
 
 
 
+=======
+>>>>>>> d6ea44552777b9a58bcf474e90ce61378d55f628
     }
 }

@@ -1,0 +1,159 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="../Scripts/ajaxCalls.js"></script>
+    <title></title>
+    <script>
+
+
+        function init() {
+            let saveUsersData = "";
+            groupName = "";
+            thisEmail = localStorage.getItem("Email")
+            thisEmail = JSON.parse(thisEmail);
+            userSend = thisEmail;
+            alert(userSend)
+        }
+      
+        function postThisToDB() {
+            //----step 1-------//
+            //here we will get json of phone numbers and will send it to the DB as string of phones and paste this string in the "where" part in the sql query
+            let phoneNumbersString = "'050555555111','050555555101'";
+           
+            groupName = document.getElementById("Group_Name").value;
+            ajaxCall("Get", "../api/User/phoneNumbersString", "phoneNumber=" + phoneNumbersString, successGet, error);
+            groupName = document.getElementById("Group_Name").value
+
+        }
+                    //לעשות פה גט שמחז'ר ל' מערך של רשומות שהמטלפון שלהם ק''ם ברש''מה שאנ' שולחת ואחכ לעשות פוסט של קבוצה חדשה לתוך הרשמה הזו
+
+//----step 2-------//
+        function successGet(data) {
+            saveUsersData = data;
+             $.ajax({
+                url:"../api/Group/GroupNameString",
+                data: { 
+                 "UserSend": userSend,
+                 "Group_name": groupName,
+                
+                     },
+                cache: false,
+                type: "GET",
+                 success: function (data) {
+
+                     successFunction(data)
+      },
+                error: function (xhr) {
+                    alert(xhr)
+                }
+                });
+
+        }
+//----step 3-------//
+
+        function successFunction(data) {
+            console.log("data2", data)
+                     if (data > 0) //the group name does not exist
+            {
+                alert("this group exist in the DB please try different name");
+                console.log("data!=0", data);
+
+                
+            }
+            else if (data == 0){
+                console.log("data=0", data)
+
+                alert("this group not exist in the DB");
+                 success(data);
+
+            }
+        }
+//----step 4-------//
+
+        function success(data) {
+            console.log("data: ", data)
+
+            Group = {
+                "User_manager": userSend,
+                "Group_name": groupName
+            }
+            ajaxCall("POST", "../api/Group", JSON.stringify(Group), successPost, error);
+
+
+        }
+//----success and error function step 5-------//
+          function successPost(data) {
+              alert("all te flow success!!");
+              addNewGroupToUserInGroupTable();
+              console.log("saveUsersData=", saveUsersData);
+
+        }
+        function error(data) {
+            console.log("err: ", data)
+        }
+
+
+
+//----step 6-------//
+
+        function addNewGroupToUserInGroupTable() {
+            $.ajax({
+                url: "../api/Group/GroupNameString",
+                data: {
+                    "UserSend": userSend,
+                    "Group_name": groupName,
+
+                },
+                cache: false,
+                type: "GET",
+                success: function (data) {
+
+                    successFunctionID(data)
+                },
+                error: function (xhr) {
+                    alert(xhr)
+                }
+            });
+        }
+
+        function successFunctionID(data) {
+            let thisGroupID = data;
+            for (var user in saveUsersData) {
+                UserInGroup = {
+                    "User_email": saveUsersData[user].Email,
+                    "Group_groupID": thisGroupID
+                }
+                ajaxCall("POST", "../api/UserInGroup", JSON.stringify(UserInGroup), UserInGroupPOSTsucc, error);
+                console.log(saveUsersData[user].Email);
+            }
+        }
+
+        
+
+        function UserInGroupPOSTsucc(data) {
+            console.log("success UserInGroupPOSTsucc")
+        }
+
+            //go back to create indecision
+         function moveToCreateNewIndecision() {
+        document.location.href = "createIndecision.html";
+
+        }
+    
+
+    </script>
+</head>
+<body onload="init()">
+    <div>
+        <p>new group</p><br />
+        <p>Group Name</p>
+        <input id="Group_Name" />
+        <button onclick="postThisToDB()">post group to DB</button> <br /><br />
+        <button onclick="moveToCreateNewIndecision()">go back to create indecision</button>
+
+
+    </div>
+</body>
+</html>
