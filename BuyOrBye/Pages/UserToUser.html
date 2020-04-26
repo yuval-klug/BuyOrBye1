@@ -1,0 +1,142 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width,initial-scale=1" name="viewport">
+    <meta content="description" name="description">
+    <meta name="google" content="notranslate" />
+    <meta content="Mashup templates have been developped by Orson.io team" name="author">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="../Scripts/ajaxCalls.js"></script>
+    <!-- Disable tap highlight on IE -->
+    <meta name="msapplication-tap-highlight" content="no">
+
+    <link href="../assets/apple-touch-icon.png" rel="apple-touch-icon">
+    <link href="../assets/favicon.ico" rel="icon">
+
+    <title>Title page</title>
+
+    <link href="../main.97292821.css" rel="stylesheet">
+    <script>
+
+        function getWeight() {
+            let userSend = localStorage.getItem("Email")
+            userSend = JSON.parse(userSend);
+
+
+            let indecisionNumber = localStorage.getItem("IndecisionID")
+            indecisionNumber = JSON.parse(indecisionNumber);
+            //  let userReceive = document.getElementById("userReceive").value;
+
+
+
+            $.ajax({
+                url: "../api/UserToUser/getWeight/" + userSend + "/" + userReceive+ "/",
+                data: {},
+                cache: false,
+                type: "GET",
+                success: function (response) {
+                    console.log(response);
+                },
+                error: function (xhr) {
+                    console.log(xhr)
+                }
+            });
+
+
+        }
+
+        function getIndecisionResult() {
+            let userSend = document.getElementById("userSend").value;
+            let indecisionNumber = document.getElementById("numOfIndecision").value;
+            indecisionNumber = parseInt(indecisionNumber);
+
+            $.ajax({
+                url: "../api/UserToUser/getAnswerPerDecision/" + userSend + "/" + indecisionNumber+ "/",
+                data: {},
+                cache: false,
+                type: "GET",
+                success: function (response) {
+                    alert(response);
+                },
+                error: function (xhr) {
+                    alert(xhr)
+                }
+            });
+
+
+        }
+
+        function options(trueOrFalse) {
+            let userSend = localStorage.getItem("Email")
+            userSend = JSON.parse(userSend);
+            let indecisionNumber = localStorage.getItem("IndecisionID")
+            indecisionNumber = JSON.parse(indecisionNumber);
+            finalOption = trueOrFalse;
+            //need to upade indecision close indecisiom == 1
+            $.ajax({
+                url: "../api/UserToUser/changeWeight/" + userSend + "/" + indecisionNumber + "/" + finalOption+ "/",
+                data: {},
+                cache: false,
+                type: "GET",
+                success: function (response) {
+                    alert(response);
+                },
+                error: function (xhr) {
+                    alert(xhr)
+                }
+            });
+
+        }
+
+        function init() {
+            //-----do we need this here?
+            //$.ajax({
+            //    url: "../api/UserToUser/changeWeight",
+            //    data: {
+            //        "UserSend": userSend,
+            //        "IndecisionID": indecisionNumber,
+            //        "Final_answer": finalOption
+            //    },
+            //    cache: false,
+            //    type: "GET",
+            //    success: function (response) {
+            //        alert(response);
+            //    },
+            //    error: function (xhr) {
+            //        alert(xhr)
+            //    }
+            //});
+        }
+    </script>
+</head>
+<body onload="init()">
+    <header>
+        <nav class="navbar navbar-default">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="index.html">BuyOrBuy</a>
+                </div>
+                <ul class="nav navbar-nav">
+                    <li class="active"><a href="index.html">Home</a></li>
+                    <li><a href="myIndecisions.html">My Indecision</a></li>
+                    <li><a href="createIndecision.html">Create New Indecision</a></li>
+                    <li><a href="GroupPage.html">Create New Group</a></li>
+                    <li><a href="PicDecision.html">Friends Indecisions</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+    <div>
+
+        <button onclick="getIndecisionResult()">get the result of all the indecision</button>
+
+    </div>
+    <div>
+        <p>what is your final decision?</p>
+        <button onclick="options(true)">option1- put img1</button>
+        <button onclick="options(false)">option2 - put img2</button>
+    </div>
+</body>
+</html>

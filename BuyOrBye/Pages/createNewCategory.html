@@ -1,0 +1,115 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width,initial-scale=1" name="viewport">
+    <meta content="description" name="description">
+    <meta name="google" content="notranslate" />
+    <meta content="Mashup templates have been developped by Orson.io team" name="author">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="../Scripts/ajaxCalls.js"></script>
+    <!-- Disable tap highlight on IE -->
+    <meta name="msapplication-tap-highlight" content="no">
+
+    <link href="../assets/apple-touch-icon.png" rel="apple-touch-icon">
+    <link href="../assets/favicon.ico" rel="icon">
+
+    <title>Title page</title>
+
+    <link href="../main.97292821.css" rel="stylesheet">
+
+    <style>
+        .dropbtn, button {
+            background-color: #3498DB;
+            color: white;
+            padding: 16px;
+            font-size: 16px;
+            border: none;
+            cursor: pointer;
+        }
+
+            .dropbtn:hover, .dropbtn:focus {
+                background-color: #2980B9;
+            }
+
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f1f1f1;
+            min-width: 160px;
+            overflow: auto;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+        }
+
+            .dropdown-content a {
+                color: black;
+                padding: 12px 16px;
+                text-decoration: none;
+                display: block;
+            }
+
+        .dropdown a:hover {
+            background-color: #ddd;
+        }
+
+        .show {
+            display: block;
+        }
+    </style>
+
+    <script>
+
+        function createNewCategory() {
+            console.log("Inside Category Creation");
+
+            algoCategory = {
+                "category_name": document.getElementById("cat_name").value,
+                "key_1": document.getElementById("key_1").value,
+                "key_2": document.getElementById("key_2").value,
+                "key_3": document.getElementById("key_3").value,
+            }
+            ajaxCall("POST", "../api/algoCategory", JSON.stringify(algoCategory), success, error); //QQQ Change Path
+
+        }
+
+        function success(data) {
+            console.log("all data", data);
+        }
+
+        function error(err) {
+            console.log("err", err);
+        }
+
+    </script>
+
+</head>
+<body>
+    <!--Category Creation Start-->
+    <h2>Create Category</h2>
+    <p>
+        Category Name :
+        <input id="cat_name" />
+    </p>
+    <p>
+        Keyword 1 :
+        <input id="key_1" />
+    </p>
+    <p>
+        Keyword 2 :
+        <input id="key_2" />
+    </p>
+    <p>
+        Keyword 3 :
+        <input id="key_3" />
+    </p>
+    <button onclick="createNewCategory()">Create New Category</button>
+    <!--Category Creation End-->
+</body>
+</html>

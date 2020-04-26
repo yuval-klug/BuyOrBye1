@@ -1,0 +1,299 @@
+﻿<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="../Scripts/ajaxCalls.js"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <style>
+    </style>
+    <script>
+        function init() {
+
+            algoCategoryJSON = [];
+
+            algoCategoryJSON = [
+                { "category_name": "test cat name", "category_val": 666 },
+                { "category_name": "test cat name 2", "category_val": 777 },
+            ]
+
+            for (var item in algoCategoryJSON) {
+                console.log(algoCategoryJSON[item].category_name);
+                console.log(algoCategoryJSON[item].category_val);
+            }
+            var txt = '{ "category_name": "test cat name", "category_val": 666}, {"category_name": "test cat name 2", "category_val": 777}';
+
+        }
+
+        /////// VV User_Category Decision Start (Many Option) VV //////////////
+
+        valueList = [];
+
+        function getCheckedCheckboxesFor(checkboxName) { //get values from checkbox
+            var checkboxes = document.querySelectorAll('input[name="' + checkboxName + '"]:checked'), values = []; //creates array of "Values"
+            Array.prototype.forEach.call(checkboxes, function (el) {
+                values.push(el.value); // push the checked checkboxes to the array "Values
+            });
+            //values holds the array
+            valueList = values;
+            console.log(valueList);
+        }
+
+        function sendLikedCategoryMultiple() { //POST to the server
+            chosenCat = valueList;
+            email = "test666@test.com"; // QQQQQQQQQQQQ **Need to get this email from Loacal Stogate
+            console.log("Alegedly send categories: " + chosenCat + "  with the following user: " + email);
+
+            for (var i = 0; i < valueList.length; i++) { // for loop to insert the User_Category the categories
+                algoUser_Category = {
+                    "category_name": chosenCat[i],
+                    "user_email": email,
+                }
+                ajaxCall("POST", "../api/algoUser_Category", JSON.stringify(algoUser_Category), success, error);
+            }
+        }
+
+        /////// ^^ User_Category Decision End (Many Option) ^^ //////////////
+
+        /////// VV Similarity Paired Alert Start (Many Option) VV //////////////
+
+        function getalgoSimilarity_pairedFromDBMultiple() {
+            ajaxCall("GET", `../api/algoSimilarity_paired`, "", GetsuccessMultiple, GeterrorMultiple);
+        }
+
+        catArr = [];
+        rankArr = [];
+
+        function GetsuccessMultiple(paireddata) {
+            console.log("all data", paireddata);
+            maxMone = 1; //mone
+            maxMone_2 = 1; //mone
+            mehaneCounter = 0; //mehane
+            mehaneCounter_2 = 0; //mehane
+            userLikedCategory = valueList; //liked category // QQQQQQQQQQQ To make it from get from DB
+            console.log(userLikedCategory);
+            suggestedCat = "";
+
+            //JSON part Start// >>>>>> SKIP <<<<<<<<<
+            catArr = [];
+            rankArr = [];
+            algoCategoryJSON = [];
+            algoCategoryJSONstring = "";
+            for (var item in paireddata) {
+                algoCategoryJSONstring += "category name: " + paireddata[item].Category_name + " Counter is: " + paireddata[item].Pair_counter;///&&&
+            }
+            console.log("JSON String: &&&");///&&&
+            console.log(algoCategoryJSONstring);///&&&
+
+            for (var i = 0; i < paireddata.length; i++) { // run on Similarity_paired Table, takes the paired value
+                catArr.push(paireddata[i].Category_paired)
+                //mehaneCounter++;
+                if (maxMone_2 < paireddata[i].Pair_counter) { //if the finds heigher counter
+                    maxMone_2 = paireddata[i].Pair_counter; // increase mone
+                    //suggestedCat = paireddata[i].Category_paired; //assign suggested category
+                    rankArr.push(maxMone_2);///&&&
+                }
+                else { rankArr.push(paireddata[i].Pair_counter); }///&&&
+                // }
+                mehaneCounter_2++; //count the amount of distinct categories (N-1 Categories)
+                googleChart()
+            }
+
+            console.log(catArr);
+            console.log(rankArr);
+            //JSON part End// >>>>>> SKIP <<<<<<<<<
+
+            for (var i = 0; i < paireddata.length; i++) { // run on Similarity_paired Table
+                for (var j = 0; j < userLikedCategory.length; j++) { //run on all chosen Checkboxes (in userLikedCategory = valueList arrays)
+                    if (paireddata[i].Category_name == userLikedCategory[j])  //finds all the Category name that the user likes(to attch a paired category after)
+                    {
+                        catArr.push(paireddata[i].Category_name)
+                        //mehaneCounter++;
+                        if (maxMone < paireddata[i].Pair_counter) { //if the finds heigher counter
+                            maxMone = paireddata[i].Pair_counter; // increase mone
+                            suggestedCat = paireddata[i].Category_paired; //assign suggested category
+                        }
+                    }
+                }
+                mehaneCounter++; //count the amount of distinct categories (N-1 Categories)
+            }
+
+
+
+            if (suggestedCat == "" || userLikedCategory.includes(suggestedCat)) { // assign RANDOM paired category if all the ranks are equal or || suggested appreas in likedCategories
+                var shouldbreak = 0;
+                for (var i = 0; i < 25; i++) {//25 times to assign no-chosen category till break
+                    randomPaired = paireddata[Math.floor(Math.random() * paireddata.length)].Category_paired;
+                    suggestedCat = randomPaired;
+                    console.log(suggestedCat);
+                    for (var j = 0; j < userLikedCategory.length; j++) {
+                        if (userLikedCategory.includes(suggestedCat) == false) { //verify that the random category not appear in the liked list
+                            shouldbreak = 1; // makes Double Breaks
+                            break;
+                        }
+                    }
+                    if (shouldbreak == 1) { //drop from the assign loop
+                        break;
+                    }
+                }
+            }
+
+            //Multiple all by x10 to decrease the value of the keword counter
+
+            calculatedMaxMone = words_counter + (maxMone * 10);
+            maxMone = maxMone * 10; // assign just for symbolic, this calue will never be used
+            mehaneCounter = (mehaneCounter * 10);
+
+            finalVal = (calculatedMaxMone / mehaneCounter);
+
+            console.log("suggested Category: " + suggestedCat);
+            console.log("Keywords appearance: " + words_counter);
+            console.log("Mone is: " + maxMone); // words_counter already assigned
+            console.log("Calculated Mone is: " + calculatedMaxMone);
+            console.log("Mehane is: " + mehaneCounter);
+            console.log("Finale Value is: " + finalVal);
+            console.log("suggested Category: " + suggestedCat);
+
+            document.getElementById("suggestedCategoryMultiple").innerHTML = suggestedCat;
+            document.getElementById("suggestedCategoryRankMultiple").innerHTML = finalVal;
+        }
+
+        function GeterrorMultiple(err) {
+            console.log("err", err);
+        }
+        /////// ^^ Similarity Paired Alert End (Many Option) ^^ //////////////
+
+        /////// VV Keywords place Start VV //////////////
+        function keywordBringer() {
+            ajaxCall("GET", "../api/algoCategory", "", wordsSuccess, wordsEerror);
+        }
+
+        function wordsSuccess(data) {
+
+            //ajaxCall("GET", "../api/algoCategory", JSON.stringify(algoCategory), wordsuccess, wordserror); //QQQ Change Path
+            console.log(data);
+            var temp = "Hey guys, I want to buy painting color color color hotel flight ?"; //temp description_
+            var wordArray = []; //temp arr
+            userLikedCategory = valueList; //temp liked categories
+            console.log(userLikedCategory);
+
+            for (var i = 0; i < data.length; i++) { //run on all of the categories
+                for (var j = 0; j < userLikedCategory.length; j++) { //run on liked categories
+                    if (data[i].Category_name == userLikedCategory[j]) { //add Category 3 keys
+                        wordArray.push(data[i].Key_1);
+                        wordArray.push(data[i].Key_2);
+                        wordArray.push(data[i].Key_3);
+                    }
+                }
+            }
+
+            console.log(wordArray)
+            console.log('the sentance is: ' + temp);
+
+            words_counter = 0;
+            for (var i = 0; i < wordArray.length; i++) {
+                words_counter += (temp.match(new RegExp(wordArray[i], "g")) || []).length; //check word by Regex expression
+                //console.log("Keyword number " + (i+1) + " is: " + wordArray[i] + " ");
+            }
+
+            console.log("Appearance of connected words: " + words_counter);
+            document.getElementById("keywords").innerHTML = "# of keys appearance is: " + words_counter;
+        }
+
+        function wordsEerror(err) {
+            console.log("err", err);
+        }
+
+        /////// ^^ Keywords place End ^^ //////////////
+
+        /////// VV Chart and Status VV //////////////
+        function googleChart() {
+            google.charts.load('current', { 'packages': ['corechart'] });
+            google.charts.setOnLoadCallback(drawChart);
+
+            // Draw the chart and set the chart values
+            function drawChart() {
+                var data = google.visualization.arrayToDataTable([
+                    ['Category', 'Rank'],
+                    //['Art', 4],
+                    //['Travel', 4],
+                    //['Movies', 4],
+                    //['Food', 4],
+                    //['Games', 4]
+                    [catArr[10], rankArr[10]],
+                    [catArr[1], rankArr[1]],
+                    //[catArr[2], rankArr[2]],
+                    [catArr[3], rankArr[3]],
+                    [catArr[5], rankArr[5]]
+                ]);
+
+                // Optional; add a title and set the width and height of the chart
+                var options = { 'title': 'Category Recommendation split', 'width': 825, 'height': 600 };
+
+                // Display the chart inside the <div> element with id="piechart"
+                var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+                chart.draw(data, options);
+            }
+        }
+
+        /////// ^^ Chart and Status ^^ //////////////
+    </script>
+</head>
+<body onload="init()">
+    <!--<h3> - - - - - - - - - - - - - - - - - - -</h3>-->
+    <h1>Choose The Category That You Like (multiple options)</h1>
+    <div class="data">
+        <span>
+            <input name="MultipleOptionsCategory" type="checkbox" value="Art" />
+            <label for="MultipleOptionsCategory">Art</label>
+        </span><br />
+
+        <span>
+            <input name="MultipleOptionsCategory" type="checkbox" value="Travel" />
+            <label for="MultipleOptionsCategory">Travel</label>
+        </span><br />
+
+        <span>
+            <input name="MultipleOptionsCategory" type="checkbox" value="Movies" />
+            <label for="MultipleOptionsCategory">Movies</label>
+        </span><br />
+
+        <span>
+            <input name="MultipleOptionsCategory" type="checkbox" value="Food" />
+            <label for="MultipleOptionsCategory">Food</label>
+        </span><br />
+        <!--here create through DOM dynamic category on Category Creation-->
+        <input type="button" onclick="getCheckedCheckboxesFor('MultipleOptionsCategory');" value="1) Get Values Array" /><br />
+        <button onclick="sendLikedCategoryMultiple()">2) Set Your Favorite (Many) Categories</button>
+    </div>
+
+    <br /><br /><br />
+    צריכים לחבר פה את היוזר מהלוקאל סטורג, כרגע רשמתי ידנית
+    <h3>--------------------------------------</h3>
+    <!--User_Category Decision End-->
+    <!--Keyword Start-->
+    <h1>Keywords Area</h1>
+    <button onclick="keywordBringer()">Display Keyword</button><br />
+    <p id="keywords">N/A</p>
+    <!--Keyword Ends-->
+    <h3>--------------------------------------</h3>
+    <h1>Suggested Category (Multiple)</h1>
+    <button onclick="getalgoSimilarity_pairedFromDBMultiple()">Click to get the Suggested Category (Multiple) </button>
+    <p><p />
+    Suggested Category is :
+    <p id="suggestedCategoryMultiple">N/A<p />
+    </p>
+    <p>
+        Rank with the value :
+    <p id="suggestedCategoryRankMultiple">N/A<p />
+    </p>
+    <!--Similarity Paired Alert End-->
+    <h3>--------------------------------------</h3>
+    <div>
+        <div id="piechart">
+            <p id="dynamicStatus">Dynamic Status</p>
+        </div>
+    </div>
+</body>
+</html>

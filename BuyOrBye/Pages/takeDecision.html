@@ -1,0 +1,84 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="../Scripts/ajaxCalls.js"></script>
+    <title></title>
+    <script>
+        let thisEmail = "";
+        let userSend = "";
+        let indecisionNumber = "";
+        function getWeight() {
+          indecisionNumber = document.getElementById("numOfIndecision").value;
+                             }
+
+        function getIndecisionResult() {
+            thisEmail = localStorage.getItem("Email")
+             thisEmail = JSON.parse(thisEmail);
+             userSend = thisEmail;
+             indecisionNumber = document.getElementById("numOfIndecision").value;
+            indecisionNumber = parseInt(indecisionNumber);
+
+            $.ajax({
+                url: "../api/UserToUser/getAnswerPerDecision/" + userSend + "/" + indecisionNumber+ "/",
+             data: {},
+             cache: false,
+             type: "GET",
+                            success: function (response) {
+                                console.log(response);
+    },
+                            error: function (xhr) {
+                                console.log(xhr)
+    }
+});
+
+
+        }
+
+        function options(trueOrFalse) {
+             indecisionNumber = document.getElementById("numOfIndecision").value;
+            finalOption = trueOrFalse;
+
+          
+
+
+            $.ajax({
+                url: "../api/UserToUser/changeWeight/" + userSend + "/" + indecisionNumber + "/" + finalOption+ "/",
+                data: {},
+                cache: false,
+                type: "GET",
+                   success: function (response) {
+                       console.log(response);
+                },
+                   error: function (xhr) {
+                       console.log(xhr)
+                }
+                });
+             
+        }
+
+       
+    </script>
+</head>
+<body>
+    <div>
+        <p>
+            --shall get this details from the client?-- <br />
+            user that send the indecision:
+        </p>
+       <p>
+            number of indecision:
+        </p>
+        <p>
+            <input id="numOfIndecision" />
+        </p>
+       
+    </div>
+    <div>
+        <p>what is your final decision?</p>
+        <button  onclick="options(true)">option1</button>
+        <button onclick="options(false)">option2</button>
+    </div>
+</body>
+</html>

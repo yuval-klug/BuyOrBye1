@@ -1,0 +1,142 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width,initial-scale=1" name="viewport">
+    <meta content="description" name="description">
+    <meta name="google" content="notranslate" />
+    <meta content="Mashup templates have been developped by Orson.io team" name="author">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="../Scripts/ajaxCalls.js"></script>
+    <!-- Disable tap highlight on IE -->
+    <meta name="msapplication-tap-highlight" content="no">
+
+    <link href="../assets/apple-touch-icon.png" rel="apple-touch-icon">
+    <link href="../assets/favicon.ico" rel="icon">
+
+    <title>Title page</title>
+
+    <link href="../main.97292821.css" rel="stylesheet">
+
+    <script>
+
+        function init() {
+            let userSend = localStorage.getItem("Email")
+            userSend = JSON.parse(userSend);
+
+            let indecisionNumber = localStorage.getItem("IndecisionID")
+            indecisionNumber = JSON.parse(indecisionNumber);
+
+
+
+
+            $.ajax({
+                url: "../api/Indecision/getIndecisionByID",
+                data: {
+                    "IndecisionID": indecisionNumber
+                },
+                cache: false,
+                type: "GET",
+                success: function (response) {
+
+                    insertIntohtml(response);
+                },
+                error: function (xhr) {
+                    alert("err")
+                }
+            });
+
+
+        }
+
+        function insertIntohtml(data) {
+            let descri = data[0].Description_
+
+            document.getElementById("descri").innerHTML = descri;
+
+        }
+
+
+        function options(trueOrFalse) {
+            let thisEmail = localStorage.getItem("Email")
+            thisEmail = JSON.parse(thisEmail);
+            let userSend = thisEmail;
+            let indecisionNumber = localStorage.getItem("IndecisionID")
+            indecisionNumber = JSON.parse(indecisionNumber);
+            finalOption = trueOrFalse;
+
+           
+
+
+            $.ajax({
+                url: "../api/UserToUser/changeWeight",
+                data: {
+                    "UserSend": userSend,
+                    "IndecisionID": indecisionNumber,
+                    "Final_answer": finalOption
+                },
+                cache: false,
+                type: "GET",
+                success: function (response) {
+                    alert("ddd",response);
+                     updateCloseIndecision() 
+                },
+                error: function (xhr) {
+                    alert(xhr)
+                }
+            });
+
+
+
+
+        }
+
+        
+        function updateCloseIndecision() {
+                let indecisionNumber = localStorage.getItem("IndecisionID")
+            indecisionNumber = JSON.parse(indecisionNumber);
+          //   ajaxCall("PUT", "../api/Indecision/PutIndecision", "IndecisionID=" + indecisionNumber, PutSuccess, error);
+
+        }
+
+
+        function PutSuccess(data) {
+            console.log(data);
+
+        }   function error(data) {
+            console.log(data);
+        }
+
+    </script>
+</head>
+<body onload="init()">
+    <header>
+        <nav class="navbar navbar-default">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="index.html">BuyOrBuy</a>
+                </div>
+                <ul class="nav navbar-nav">
+                    <li class="active"><a href="index.html">Home</a></li>
+                    <li><a href="myIndecisions.html">My Indecision</a></li>
+                    <li><a href="createIndecision.html">Create New Indecision</a></li>
+                    <li><a href="GroupPage.html">Create New Group</a></li>
+                    <li><a href="PicDecision.html">Friends Indecisions</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+    <div>
+        <p id="descri">
+
+        </p>
+
+    </div>
+    <div>
+        <p>what is your final decision?</p>
+        <button onclick="options(true)">option1</button>
+        <button onclick="options(false)">option2</button>
+    </div>
+</body>
+</html>

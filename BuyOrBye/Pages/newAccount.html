@@ -1,0 +1,135 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width,initial-scale=1" name="viewport">
+    <meta content="description" name="description">
+    <meta name="google" content="notranslate" />
+    <meta content="Mashup templates have been developped by Orson.io team" name="author">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="../Scripts/ajaxCalls.js"></script>
+    <!-- Disable tap highlight on IE -->
+    <meta name="msapplication-tap-highlight" content="no">
+
+    <link href="../assets/apple-touch-icon.png" rel="apple-touch-icon">
+    <link href="../assets/favicon.ico" rel="icon">
+
+    <title>Title page</title>
+
+    <link href="../main.97292821.css" rel="stylesheet">
+    <script>
+        function getUserBasedOnPrevEmail() {
+
+
+            let email = document.getElementById("Email").value !== undefined ? document.getElementById("Email").value : "";
+            let password = document.getElementById("password").value !== undefined ? document.getElementById("password").value : "";
+            let first_name = document.getElementById("first_name").value !== undefined ? document.getElementById("first_name").value : "";
+            let last_name = document.getElementById("last_name").value !== undefined ? document.getElementById("last_name").value : "";
+            let phone = document.getElementById("phone").value !== undefined ? document.getElementById("phone").value : "";
+            User = {
+                "Email": email,
+                "Password": password,
+                "First_name": first_name,
+                "Last_name": last_name,
+                "DateTime": "will calculate in BL",
+                "Phone": phone,
+            }
+            ajaxCall("POST", "../api/User", JSON.stringify(User), success, error);
+
+        }
+        function updateUserToDB() { }
+
+        function success(data) {
+
+            console.log("succ",data)
+        }
+
+
+        function error(err) {
+            console.log("err",err)
+        }
+
+        function goBackToSignIn() {
+
+         document.location.href = "signIn.html" 
+        }
+    </script>
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-default">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="index.html">BuyOrBuy</a>
+                </div>
+                <ul class="nav navbar-nav">
+                    <li class="active"><a href="index.html">Home</a></li>
+                    <li><a href="myIndecisions.html">My Indecision</a></li>
+                    <li><a href="createIndecision.html">Create New Indecision</a></li>
+                    <li><a href="GroupPage.html">Create New Group</a></li>
+                    <li><a href="friendsIndecision.html">Friends Indecisions</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+    <div class="section-container" id="contact-section-container">
+        <div class="container contact-form-container">
+
+            <div class="row">
+                <div class="col-xs-12 col-md-offset-2 col-md-8">
+                    <div class="section-container-spacer">
+                        <h2 class="text-center">Create New Account</h2>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <input type="text" id="Email" class="form-control" placeholder="Email">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <input type="text" id="password" class="form-control" placeholder="Password">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <input type="text" id="first_name" class="form-control" placeholder="First Name">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <input type="text" id="last_name" class="form-control" placeholder="Last Name">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <input type="text" id="phone" class="form-control" placeholder="Phone Number">
+                            </div>
+                        </div>
+                    </div><div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <input type="text" id="category" class="form-control" placeholder="Coose Category - TBD">
+                            </div>
+                        </div>
+                    </div>
+
+                    <button onclick="getUserBasedOnPrevEmail()" style="text-align:center" class="btn btn-primary">Update</button>
+                    <button onclick="goBackToSignIn()" style="text-align:center" class="btn btn-primary">Go Back To Sign In</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</body>
+</html>
