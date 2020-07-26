@@ -1,0 +1,196 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width,initial-scale=1" name="viewport">
+    <meta content="description" name="description">
+    <meta name="google" content="notranslate" />
+    <meta content="Mashup templates have been developped by Orson.io team" name="author">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="../Scripts/ajaxCalls.js"></script>
+    <!-- Disable tap highlight on IE -->
+    <meta name="msapplication-tap-highlight" content="no">
+
+    <link href="../assets/apple-touch-icon.png" rel="apple-touch-icon">
+    <link href="../assets/favicon.ico" rel="icon">
+
+    <title>Title page</title>
+
+    <link href="../main.97292821.css" rel="stylesheet">
+
+    <style>
+        article, aside, figure, footer, header, hgroup,
+        menu, nav, section {
+            display: block;
+        }
+    </style>
+    <script>
+        let selectInto = "";
+        thisEmail = "";
+        indecisionIDfromDB = "";
+        function moveToCreateNewGroup() {
+            document.location.href = "GroupPage.html";
+
+        }
+
+        function assignChosenGroupId() {
+            ChosenGroupId = document.getElementById("groups").value;
+            console.log("alegedly changed group ID: " + document.getElementById("groups").value);
+        }
+
+        function insertIndecisionToDB() {
+            email = localStorage.getItem("Email")
+            email = JSON.parse(email);
+
+            groupID = ChosenGroupId;
+            description = document.getElementById("description").value;
+            img1 = "image 1 path";
+            img2 = "image 2 path";
+            //img1 = document.getElementById("img_0").innerHTML
+
+
+            Indecision = {
+                "Group_groupID": groupID,
+                "User_email": email,
+                "Description_": description,
+                "Img1": img1,
+                "Img2": img2,
+                "Final_answer": "",
+                "CurrectAnswerPercent": "",
+                "closeIndecision":0,
+
+            }
+            ajaxCall("POST", "../api/Indecision", JSON.stringify(Indecision), successPost, error);
+            //console.log("Alegedly sent on POST the Group id: " +groupID);
+        }
+
+        function init() {
+            thisEmail = localStorage.getItem("Email")
+            thisEmail = JSON.parse(thisEmail);
+            ajaxCall("GET", `../api/Group/`+thisEmail+"/", "", success, error);
+        }
+
+        function successPost(data) {
+            console.log("POST succeed" + data);
+            //get all tw users in te group id and post tem to db
+
+            $.ajax({
+                url: "../api/Indecision/" + thisEmail+"/true/",
+                data: {},
+                cache: false,
+                        type: "GET",
+                success: function (response) {
+                  //  console.log("bbb",response);
+                    indecisionIDfromDB = response[0].IndecisionID;
+                    getUsersInGroup(indecisionIDfromDB);
+                   
+                },
+                error: function (xhr) {
+                    console.log(xhr)
+    }
+});
+
+                       function getUsersInGroup(indecisionIDfromDB) {
+                $.ajax({
+                    url: "../api/UserInGroup/GroupNameString/" + groupID + "/" + indecisionIDfromDB+ "/",
+                    data: {},
+                    cache: false,
+                    type: "GET",
+                    success: function (response) {
+                        console.log("get user in group", response);
+                        alert("the decision was sent to your friends!")
+
+                    },
+                    error: function (xhr) {
+                        console.log(xhr)
+                    }
+                });
+            }
+
+        }
+
+        function success(data) {
+            console.log(data);
+            selectInto = `<select id="groups"> <option value="0">select group</option>`;
+            for (var group in data) {
+                selectInto += ` <option value="${data[group].Group_ID}">${data[group].Group_name}</option>`
+
+            }
+            selectInto += `</select>`
+
+            document.getElementById("insertGroup").innerHTML += selectInto;
+        }
+        function error(data) {
+            console.log("POST Failed" + data);
+        }
+
+        /////////////////////////
+        function readURL_0(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $('#img_0')
+                        .attr('src', e.target.result)
+                        .width(150)
+                        .height(200);
+                };
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        function readURL_1(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $('#img_1')
+                        .attr('src', e.target.result)
+                        .width(150)
+                        .height(200);
+                };
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+        /////////////////////////
+
+
+    </script>
+</head>
+<body onload="init()">
+    <header>
+        <nav class="navbar navbar-default">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="index.html">BuyOrBuy</a>
+                </div>
+                <ul class="nav navbar-nav">
+                    <li class="active"><a href="index.html">Home</a></li>
+                    <li><a href="myIndecisions.html">My Indecision</a></li>
+                    <li><a href="GroupPage.html">Create New Group</a></li>
+                    <li><a href="friendsIndecision.html">Friends Indecisions</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+    <label for="groups">your group:</label>
+    <p id="insertGroup" onchange="assignChosenGroupId()">
+    </p>
+    <p> Description</p>
+    <input id="description" />
+    <!--img-->
+    <p> img1</p>
+    <input type='file' onchange="readURL_0(this);" />
+    <img id="img_0" src="#" alt="your image" />
+    <p> img 2</p>
+    <input type='file' onchange="readURL_1(this);" />
+    <img id="img_1" src="#" alt="your image" />
+    <br /><br />
+    <!--img-->
+    <button onclick="moveToCreateNewGroup()"> create new group</button>
+    <button onclick="insertIndecisionToDB()">send indecision</button><br />
+</body>
+</html>

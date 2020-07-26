@@ -1,0 +1,70 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="../Scripts/ajaxCalls.js"></script>
+    <title></title>
+    <script>
+        let userSend = "";
+        let groupName = "";
+        function postThisToDB() {
+            //------step1------//
+            //here we will get json of phone numbers and will send it to the DB as string of phones and paste this string in the "where" part in the sql query
+            let phoneNumbersString = "0505555551','050555555101";
+            userSend = "test1@test.com";//this fill shall get from the login page
+            ajaxCall("Get", "../api/User/phoneNumbersString", "phoneNumber=" + phoneNumbersString, successPost, error);
+            groupName = document.getElementById("Group_Name").value
+
+        }
+
+        function success(data) {
+            console.log("data: ", data)
+
+            Group = {
+                "User_manager": userSend,
+                "Group_name": groupName
+            }
+            ajaxCall("POST", "../api/Group", JSON.stringify(Group), successPost, error);
+
+
+        }
+        function error(data) {
+            console.log("err: ", data)
+        }
+        function successPost(data) {
+            console.log("data: ", data)
+            ajaxCall("Get", "../api/Group/GroupNameString", "Group_name=" + groupName, successGetGroupID, error);
+
+        }
+
+        function successGetGroupID(data) {
+
+            if (data == 0) //the group name does not exist
+            {
+
+                alert("this group not exist in the DB")
+
+            }
+            else {
+                alert("gooood", data)
+                console.log("ll", data)
+                //לקחת את כל רש'מת ה'וזר'ם שק'בלת' ולהכנ'ס אותם לתוך useringroup עם הid שבתוך הדאטא
+            }
+        }
+
+
+
+    </script>
+</head>
+<body>
+    <div>
+        <p>Create New decision by groupName or add new group</p><br />
+        <p> your groups:</p>
+        <p id="groupList"></p>
+        <p>Group Name</p>
+        <input id="Group_Name" />
+        <button onclick="postThisToDB()">post group to DB</button>
+    </div>
+</body>
+</html>

@@ -1,0 +1,348 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width,initial-scale=1" name="viewport">
+    <meta content="description" name="description">
+    <meta name="google" content="notranslate" />
+    <meta content="Mashup templates have been developped by Orson.io team" name="author">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="../Scripts/ajaxCalls.js"></script>
+    <!-- Disable tap highlight on IE -->
+    <meta name="msapplication-tap-highlight" content="no">
+
+    <link href="../assets/apple-touch-icon.png" rel="apple-touch-icon">
+    <link href="../assets/favicon.ico" rel="icon">
+
+    <title>Title page</title>
+
+    <link href="../main.97292821.css" rel="stylesheet">
+
+    <style>
+        .dropbtn {
+            background-color: #3498DB;
+            color: white;
+            padding: 16px;
+            font-size: 16px;
+            border: none;
+            cursor: pointer;
+        }
+
+            .dropbtn:hover, .dropbtn:focus {
+                background-color: #2980B9;
+            }
+
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f1f1f1;
+            min-width: 160px;
+            overflow: auto;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+        }
+
+            .dropdown-content a {
+                color: black;
+                padding: 12px 16px;
+                text-decoration: none;
+                display: block;
+            }
+
+        .dropdown a:hover {
+            background-color: #ddd;
+        }
+
+        .show {
+            display: block;
+        }
+    </style>
+
+    <script>
+
+        usersFromPhonelist = [];
+
+        function init() {
+            let saveUsersData = "";
+            groupName = "";
+            thisEmail = localStorage.getItem("Email")
+            thisEmail = JSON.parse(thisEmail);
+            userSend = thisEmail;
+            alert(userSend)
+            DropDownChanged()
+        }
+
+
+        phoneNumbersString = "";
+
+        function postThisToDB() {
+            //----step 1-------//
+            //here we will get json of phone numbers and will send it to the DB as string of phones and paste this string in the "where" part in the sql query
+            //let phoneNumbersString = "'050555555111','050555555101'";
+            console.log(phoneNumbersString);
+
+            groupName = document.getElementById("Group_Name").value;
+            ajaxCall("Get", "../api/User/phoneNumbersString/" + phoneNumbersString + "/", '', successGet, error);
+            groupName = document.getElementById("Group_Name").value
+
+        }
+        //לעשות פה גט שמחז'ר ל' מערך של רשומות שהמטלפון שלהם ק''ם ברש''מה שאנ' שולחת ואחכ לעשות פוסט של קבוצה חדשה לתוך הרשמה הזו
+
+        //----step 2-------//
+        function successGet(data) {
+            saveUsersData = data;
+            $.ajax({
+                url: "../api/Group/GroupNameStringGroup/" + userSend + "/" + groupName + "/true/",
+                data: {},
+                cache: false,
+                type: "GET",
+                success: function (data) {
+
+                    successFunction(data)
+                },
+                error: function (xhr) {
+                    alert(xhr)
+                }
+            });
+
+        }
+        //----step 3-------//
+
+        function successFunction(data) {
+            let x = 1;
+            console.log("data2", data)
+            if (data > 0) //the group name does not exist
+            {
+                alert("this group exist in the DB please try different name");
+                console.log("data!=0", data);
+
+
+            }
+            else if (data == 0) {
+                console.log("data=0", data)
+
+                alert("this group not exist in the DB");
+                success(data);
+
+            }
+        }
+        //----step 4-------//
+
+        function success(data) {
+            console.log("data: ", data)
+
+            Group = {
+                "User_manager": userSend,
+                "Group_name": groupName
+            }
+            ajaxCall("POST", "../api/Group", JSON.stringify(Group), successPost, error);
+
+
+        }
+        //----success and error function step 5-------//
+        function successPost(data) {
+            alert("all te flow success!!");
+            addNewGroupToUserInGroupTable();
+            console.log("saveUsersData=", saveUsersData);
+
+        }
+        function error(data) {
+            console.log("err: ", data)
+        }
+
+
+
+        //----step 6-------//
+
+        function addNewGroupToUserInGroupTable() {
+            $.ajax({
+                url: "../api/Group/GroupNameStringGroup/" + userSend + "/" + groupName + "/true/",
+                data: {},
+                cache: false,
+                type: "GET",
+                success: function (data) {
+
+                    successFunctionID(data)
+                },
+                error: function (xhr) {
+                    alert(xhr)
+                }
+            });
+        }
+
+        function successFunctionID(data) {
+            let thisGroupID = data;
+            for (var user in saveUsersData) {
+                UserInGroup = {
+                    "User_email": saveUsersData[user].Email,
+                    "Group_groupID": thisGroupID
+                }
+                ajaxCall("POST", "../api/UserInGroup", JSON.stringify(UserInGroup), UserInGroupPOSTsucc, error);
+                console.log(saveUsersData[user].Email);
+            }
+        }
+
+
+
+        function UserInGroupPOSTsucc(data) {
+            console.log("success UserInGroupPOSTsucc")
+        }
+
+        //go back to create indecision
+        function moveToCreateNewIndecision() {
+            document.location.href = "createIndecision.html";
+
+        }
+
+        //////////////// Dropdown Code Start////////////////////////////
+        dropdownCounter = 0;
+        usersListToCheck = [];
+        arrEmailsPhone = [];
+
+        function DropDownChanged() {
+            if (dropdownCounter < 1) {
+                ajaxCall("Get", "../api/User", "", sucUser, error);
+                dropdownCounter++;
+            }
+        }
+
+        function sucUser(data) {
+            console.log("Alegedly succeed users ");
+            console.log(data);
+
+            usersList = `<select onchange="addUserFunc(this.value)" id="users"> <option value="0">select users</option>`;
+            for (var index in data) {
+                console.log(data[index].Email + " " + data[index].Phone + " ");
+                //usersList += ` <option value="${data[index].Email}">${data[index].Phone}</option>`;
+                usersList += "<option value=" + data[index].Email + '>' + "First Name: " + data[index].First_name + " Phone:" + data[index].Phone + "</option>";
+                //usersList += "<option value=" + data[index].Email + '">' + "First Name: " + data[index].First_name + " Phone:" + data[index].Phone + "</option>";
+            }
+            usersList += `</select>`;
+            document.getElementById("InsertUsers").innerHTML = usersList;
+
+        }
+
+        function addUserFunc(value) { // for UserToUser POST
+            console.log("inside");
+            console.log(value);
+            usersListToCheck.push(value);
+            arrEmailsPhone.push(value);
+            console.log("List of user to check if exist in User To Users: ");
+            console.log(usersListToCheck);
+            console.log("arr email to check");
+            console.log(arrEmailsPhone);
+            //addUserPhone(dataHolder);
+        }
+
+        function phoneBuilder() {
+            console.log("inside phone builder");
+            ajaxCall("Get", "../api/User", "", sucForPhoneList, error);
+        }
+
+
+        function sucForPhoneList(data) {
+            for (var i = 0; i < data.length; i++) {
+                for (var j = 0; j < arrEmailsPhone.length; j++) {
+                    if (data[i].Email == arrEmailsPhone[j]) {
+                        if (phoneNumbersString == "") {
+                            phoneNumbersString += "'" + data[i].Phone + "'";
+                        } else {
+                            phoneNumbersString += "," + "'" + data[i].Phone + "'";
+                        }
+                    }
+                }
+            }
+            console.log("Phone number string is:");
+            console.log(phoneNumbersString);
+        }
+
+        //If there is email_send and email_recieved it fail, but if there is not, it creates new connection with Currentanswer 1 as default
+        function PostNewUserToUser() {
+            console.log("Alegedly posted new friends)");
+
+            for (var i = 0; i < usersListToCheck.length; i++) {
+                UserToUser = {
+                    "UserSend": userSend,
+                    "UserReceive": usersListToCheck[i],
+                    "NumOfCurrectAnswer": 1,
+                }
+                console.log(UserToUser)
+                ajaxCall("POST", "../api/UserToUser", JSON.stringify(UserToUser), successUserToUser, error);
+            }
+
+        }
+        function successUserToUser(data) {
+            console.log(data)
+        }
+
+        //////////////// Dropdown Code Ends////////////////////////////
+    </script>
+</head>
+<body onload="init()">
+    <header>
+        <nav class="navbar navbar-default">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="index.html">BuyOrBuy</a>
+                </div>
+                <ul class="nav navbar-nav">
+                    <li class="active"><a href="index.html">Home</a></li>
+                    <li><a href="myIndecisions.html">My Indecision</a></li>
+                    <li><a href="createIndecision.html">Create New Indecision</a></li>
+                    <li><a href="friendsIndecision.html">Friends Indecisions</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+    <div>
+        <div class="section-container" id="contact-section-container">
+            <div class="container contact-form-container">
+
+                <div class="row">
+                    <div class="col-xs-12 col-md-offset-2 col-md-8">
+                        <div class="section-container-spacer">
+                            <h2 class="text-center">Create New Group</h2>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <input type="text" id="chooseFriends" class="form-control" placeholder="Choose Friends - TBD">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <div class="dropdown">
+                                        <p id="InsertUsers" onclick="DropDownChanged()">
+                                            click me
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <input type="text" id="Group_Name" class="form-control" placeholder="Group Name">
+                                </div>
+                            </div>
+                        </div>
+                        <button onclick="phoneBuilder()" style="text-align:center" class="btn btn-primary">1) Build Phone List</button>
+                        <button onclick="PostNewUserToUser()" style="text-align:center" class="btn btn-primary">2) Create New Friends Connection</button>
+                        <button onclick="postThisToDB()" style="text-align:center" class="btn btn-primary">3) Add Group</button>
+                        <button onclick="moveToCreateNewIndecision()" style="text-align:center" class="btn btn-primary">Go Back To Create Indecision</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

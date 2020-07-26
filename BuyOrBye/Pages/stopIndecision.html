@@ -1,0 +1,201 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width,initial-scale=1" name="viewport">
+    <meta content="description" name="description">
+    <meta name="google" content="notranslate" />
+    <meta content="Mashup templates have been developped by Orson.io team" name="author">a
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="../Scripts/ajaxCalls.js"></script>
+    <!-- Disable tap highlight on IE -->
+    <meta name="msapplication-tap-highlight" content="no">
+
+    <link href="../assets/apple-touch-icon.png" rel="apple-touch-icon">
+    <link href="../assets/favicon.ico" rel="icon">
+
+    <title>Title page</title>
+
+    <link href="../main.97292821.css" rel="stylesheet">
+
+    <script>
+
+        function init() {
+            let userSend = localStorage.getItem("Email")
+            userSend = JSON.parse(userSend);
+
+            let indecisionNumber = localStorage.getItem("IndecisionID")
+            indecisionNumber = JSON.parse(indecisionNumber);
+
+
+
+
+            $.ajax({
+                url: "../api/Indecision/getIndecisionByID/" + indecisionNumber + "/",
+                data: {},
+                cache: false,
+                type: "GET",
+                success: function (response) {
+
+                    insertIntohtml(response);
+                },
+                error: function (xhr) {
+                    console.log("err")
+                }
+            });
+
+
+        }
+
+        function insertIntohtml(data) {
+            let descri = data[0].Description_
+
+            document.getElementById("descri").innerHTML = descri;
+
+        }
+
+        // dratf!!!!!!!!!!!! not moved to "my indecision" page
+        //function getIndecisionResult() {
+        //    let userSend = document.getElementById("userSend").value;
+        //    let indecisionNumber = document.getElementById("numOfIndecision").value;
+        //    indecisionNumber = parseInt(indecisionNumber);
+
+        //    $.ajax({
+        //        url: "../api/UserToUser/getAnswerPerDecision",
+        //        data: {
+        //            "userSend": userSend,
+        //            "IndecisionID": indecisionNumber
+        //        },
+        //        cache: false,
+        //        type: "GET",
+        //        success: function (response) {
+        //            alert(response);
+
+        //        },
+        //        error: function (xhr) {
+        //            alert(xhr)
+        //        }
+        //    });
+
+
+        //}
+
+        function options(trueOrFalse) {
+            let thisEmail = localStorage.getItem("Email")
+            thisEmail = JSON.parse(thisEmail);
+            let userSend = thisEmail;
+            let indecisionNumber = localStorage.getItem("IndecisionID")
+            indecisionNumber = JSON.parse(indecisionNumber);
+            finalOption = trueOrFalse;
+
+
+
+
+            $.ajax({
+                url: "../api/UserToUser/changeWeight/" + userSend + "/" + indecisionNumber + "/" + finalOption + "/",
+                data: {},
+                cache: false,
+                type: "GET",
+                success: function (response) {
+                    console.log("the indecision was stored in DB as close");
+                    console.log(response)
+                    updateCloseIndecision()
+                },
+                error: function (xhr) {
+                    console.log(xhr)
+                }
+            });
+
+
+
+
+        }
+
+
+        function updateCloseIndecision() {
+            let indecisionNumber = localStorage.getItem("IndecisionID")
+            indecisionNumber = JSON.parse(indecisionNumber);
+
+            Indecision = {
+                "IndecisionID": indecisionNumber
+            }
+            ajaxCall("PUT", "../api/Indecision/PutIndecision", JSON.stringify(Indecision), PutSuccess, error);
+
+        }
+
+        function PutSuccess(data) {
+            alert("back to home page!");
+            document.location.href = "index.html"
+        }
+
+        function error(data) {
+            console.log("err update");
+        }
+
+        //moved to "my indecision" page
+        //  function getIndecisionResult() {
+        //    let thisEmail = localStorage.getItem("Email")
+        //    thisEmail = JSON.parse(thisEmail);
+        //    let userSend = thisEmail;
+        //    let indecisionNumber = localStorage.getItem("IndecisionID")
+        //    indecisionNumber = JSON.parse(indecisionNumber);
+
+        //    $.ajax({
+        //        url: "../api/UserToUser/getAnswerPerDecision",
+        //        data: {
+        //            "userSend": userSend,
+        //            "IndecisionID": indecisionNumber
+        //        },
+        //        cache: false,
+        //        type: "GET",
+        //        success: function (response) {
+        //         if (response > 0.5) {
+        //                alert("img 1 win with " + response + " %");
+        //            }
+        //            else {
+        //                response = 1 - parseInt(response);
+        //                 alert("img 2 win with " + response + " %");
+
+        //            }
+        //        },
+        //        error: function (xhr) {
+        //            alert(xhr)
+        //        }
+        //    });
+
+
+        //}
+    </script>
+</head>
+<body onload="init()">
+    <header>
+        <nav class="navbar navbar-default">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="index.html">BuyOrBuy</a>
+                </div>
+                <ul class="nav navbar-nav">
+                    <li class="active"><a href="index.html">Home</a></li>
+                    <li><a href="myIndecisions.html">My Indecision</a></li>
+                    <li><a href="createIndecision.html">Create New Indecision</a></li>
+                    <li><a href="GroupPage.html">Create New Group</a></li>
+                    <li><a href="friendsIndecision.html">Friends Indecisions</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+    <div>
+        <p id="descri">
+
+        </p>
+        <!--<button onclick="getIndecisionResult()">get the result of all the indecision</button>-- moved to my indecisionas>-->
+
+    </div>
+    <div>
+        <p>what is your final decision?</p>
+        <button onclick="options(true)">option1</button>
+        <button onclick="options(false)">option2</button>
+    </div>
+</body>
+</html>

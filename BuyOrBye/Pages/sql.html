@@ -1,0 +1,94 @@
+﻿<!--select * from buyOrBye_Category
+
+delete from buyOrBye_user
+
+CREATE TABLE buyOrBye_userInIndecision (
+	userInGroup_emailParticipant nvarchar (100) NOT NULL,
+	userInGroup_groupID int not null,
+	indecision_indecisionID int not null,
+	pic_num bit ,
+	reactionTime float,
+	FOREIGN KEY (userInGroup_emailParticipant) REFERENCES buyOrBye_userInGroup(user_email),
+	FOREIGN KEY (userInGroup_groupID) REFERENCES buyOrBye_userInGroup(group_groupID),
+	FOREIGN KEY (indecision_indecisionID) REFERENCES buyOrBye_Indecision(indecisionID),
+	PRIMARY KEY (user_emailParticipant,group_groupID,indecision_indecisionID));
+
+	select * from buyOrBye_Indecision
+
+CREATE TABLE buyOrBye_UserIn_Indecision (
+	indecisionID int not null,
+	userInGroup_user_email nvarchar (100) NOT NULL,
+	userInGroup_emailSend nvarchar (100) NOT NULL,
+	reactionTime float ,
+	pic_num bit ,
+	percent_option1 float,
+	percent_option2 float,
+	FOREIGN KEY (userInGroup_user_email) REFERENCES buyOrBye_Indecision(user_email),
+	FOREIGN KEY (userInGroup_emailSend) REFERENCES buyOrBye_user(email),
+	FOREIGN KEY (indecisionID) REFERENCES buyOrBye_Indecision(indecisionID]),
+	PRIMARY KEY (indecisionID,userInGroup_emailSend));
+
+
+CREATE TABLE buyOrBye_Indecision (
+	indecisionID int  not null,
+	group_groupID int not null,
+	user_email nvarchar (100) NOT NULL,
+	description_ nvarchar (200) NOT NULL,
+	img1 nvarchar (200),
+	img2 nvarchar (200),
+	final_answer bit,
+	FOREIGN KEY (group_groupID) REFERENCES buyOrBye_Group(groupID),
+	FOREIGN KEY (user_email) REFERENCES buyOrBye_user(email),
+	PRIMARY KEY (indecisionID,group_groupID,user_email));
+
+
+	select * from buyOrBye_User_In_Indecision
+	userInGroup_emailParticipant
+
+	select * from [buyOrBye_UserToUser]
+
+	select * from buyOrBye_UserTo
+
+	select * from buyOrBye_User_In_Indecision uii left join [dbo].[buyOrBye_UserToUser]
+
+CREATE TABLE buyOrBye_UserToUser (
+	user_emailSend nvarchar (100) NOT NULL,
+	user_emailreceive nvarchar (100) NOT NULL,
+	numOfGroup int  not null,
+	numOfCurrectAnswer int  not null,
+	FOREIGN KEY (user_emailSend) REFERENCES buyOrBye_user(email),
+	FOREIGN KEY (user_emailreceive) REFERENCES buyOrBye_user(email),
+	PRIMARY KEY (user_emailSend,user_emailreceive));
+
+	 INSERT INTO buyOrBye_UserToUser (user_emailSend,user_emailreceive,numOfGroup,numOfCurrectAnswer)Values('yuvalklugman244@gmail.com','yuvalii_k55@walla.com', '2','2')
+
+
+	 select * from buyOrBye_User_In_Indecision
+	 --להוסף עמודת מבחן
+
+
+	 select * from
+	        percent_option1
+            percent_option2
+
+	   select * from buyOrBye_User
+
+	   ALTER TABLE buyOrBye_User_In_Indecision
+		ADD  percent_option2 float;
+
+
+INSERT INTO buyOrBye_Indecision (indecisionID, group_groupID, user_email, description_, img1, img2, final_answer, percent_option1, percent_option2)Values('1', '1' ,'yuvalklugman244@gmail.com','1','','1','False','1','1')
+
+INSERT INTO buyOrBye_Indecision (indecisionID, group_groupID, description_, img1, img2, final_answer, percent_option1, percent_option2)Values('1', '1' ,'yuvalklugman244@gmail.com','1','1','False','1','11')
+
+
+INSERT INTO buyOrBye_Group (user_manager,group_name)Values('yuval_k55@walla.com', '')
+
+select * from buyOrBye_userInGroup
+
+INSERT INTO buyOrBye_userInGroup (user_email, group_groupID, weight_)Values('yuvalklugman244@gmail.com', '1' ,'0.4')
+
+INSERT INTO buyOrBye_userInGroup (user_email, group_groupID, weight_)Values('yuvalkluman244@gmail.com', '13' ,'4.6')
+
+
+INSERT INTO buyOrBye_Indecision (indecisionID, group_groupID, description_, img1, img2, final_answer, percent_option1, percent_option2)Values('0', '0' ,'','3','4','False','5','6')-->

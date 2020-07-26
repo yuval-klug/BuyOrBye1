@@ -1,0 +1,249 @@
+﻿<!-- Add your content of head and header -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width,initial-scale=1" name="viewport">
+    <meta content="description" name="description">
+    <meta name="google" content="notranslate" />
+    <meta content="Mashup templates have been developped by Orson.io team" name="author">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="../Scripts/ajaxCalls.js"></script>
+    <!-- Disable tap highlight on IE -->
+    <meta name="msapplication-tap-highlight" content="no">
+
+    <link href="../assets/apple-touch-icon.png" rel="apple-touch-icon">
+    <link href="../assets/favicon.ico" rel="icon">
+
+    <title>Title page</title>
+
+    <link href="../main.97292821.css" rel="stylesheet">
+
+    <script>
+        first_name = "";
+        lasr_name = "";
+        function moveTO(page) {
+
+            document.location.href = `${page}.html`;
+
+        }
+
+        function init() {
+            let email = localStorage.getItem("Email")
+            email = JSON.parse(email);
+
+
+            $.ajax({
+                url: "../api/User/UserEmail/" + email + "/true/",
+                data: {},
+                cache: false,
+                type: "GET",
+                success: function (response) {
+                    console.log(response);
+                    for (userEmail in response) {
+                        first_name = response[userEmail].First_name;
+                        last_name = response[userEmail].Last_name;
+                        let insertInto = `hey ${first_name} ${last_name} welcome back!`;
+                        document.getElementById("titleBOB").innerHTML = insertInto;
+                    }
+                    console.log(first_name);
+                    console.log(last_name);
+                },
+                error: function (xhr) {
+                    console.log(xhr)
+                }
+            });
+
+        }
+
+
+    </script>
+
+
+</head>
+
+<body onload="init()">
+
+
+
+
+    <!-- Add your site or app content here -->
+    <div class="section-container">
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12 col-md-12 section-container-spacer">
+                    <h3 class="text-center" id="titleBOB"></h3>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 col-md-4">
+                    <div class="fa-container">
+                        <i id="createIndecision" class="fa fa-camera-retro fa-3x" onclick="moveTO(this.id)"></i>
+                    </div>
+                    <h3 class="text-center">Create New Indecision</h3>
+                </div>
+
+
+                <div class="col-xs-12 col-md-4">
+                    <div class="fa-container" onclick="moveTO(this.id)" id="myIndecisions">
+                        <i class="fa fa-heart-o fa-3x" aria-hidden="true"></i>
+                    </div>
+                    <h3 class="text-center">My Indecision</h3>
+
+                </div>
+                <div class="col-xs-12 col-md-4">
+                    <div class="fa-container" onclick="moveTO(this.id)" id="friendsIndecision">
+                        <i class="fa fa-bell-o fa-3x" aria-hidden="true"></i>
+                    </div>
+                    <h3 class="text-center">help Friends With Their Indecisions</h3>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section-container section-half-background-image-container">
+        <div class="container">
+            <div class="row">
+                <img style="width:inherit;height:inherit" src="../imgas/WhatsApp Image 2020-04-18 at 10.35.13.jpeg" />
+            </div>
+        </div>
+    </div>
+
+    <div class="section-container">
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12 col-md-12 section-container-spacer">
+                    <h2 class="text-center">More Options</h2>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 col-md-3">
+                    <div class="fa-container" onclick="moveTO(this.id)" id="GroupPage">
+                        <i class="fa fa-user-plus fa-3x" aria-hidden="true"></i>
+                    </div>
+                    <h3 class="text-center">Create New Group</h3>
+                </div>
+
+                <div class="col-xs-12 col-md-3">
+                    <div class="fa-container" onclick="moveTO(this.id)" id="profileAccount">
+                        <i class="fa fa-user-circle-o fa-3x" aria-hidden="true"></i>
+                    </div>
+                    <h3 class="text-center">Change details</h3>
+
+                </div>
+                <div class="col-xs-12 col-md-3">
+                    <div class="fa-container">
+                        <i class="fa fa-address-book fa-3x" aria-hidden="true"></i>
+                    </div>
+                    <h3 class="text-center" onclick="moveTO(this.id)" id="signIn">Switch Account</h3>
+                </div>
+                <div class="col-xs-12 col-md-3">
+                    <div class="fa-container" onclick="moveTO(this.id)" id="createNewCategory">
+                        <i class="fa fa-user-plus fa-3x" aria-hidden="true"></i>
+                    </div>
+                    <h3 class="text-center">Create New Category</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section-container" id="contact-section-container">
+        <div class="container contact-form-container">
+            <div class="row">
+                <div class="col-xs-12 col-md-offset-2 col-md-8">
+                    <div class="section-container-spacer">
+                        <h2 class="text-center">Get in touch</h2>
+                    </div>
+                    <form action="">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <input type="text" name="name" class="form-control" placeholder="Name">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <input type="email" name="email" class="form-control" placeholder="Email">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <textarea class="form-control" rows="3" placeholder="Enter your message"></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="checkbox-inline">
+                                <input type="checkbox" id="inlineCheckbox1" value="option1">Email me a copy
+                            </label>
+                            <label class="checkbox-inline">
+                                <input type="checkbox" id="inlineCheckbox2" value="option2">I am a human
+                            </label>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">Send message</button>
+                        <a href="" class="btn btn-default">Reset</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <footer class="footer-container white-text-container">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <h4>About us</h4>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc sit amet consectetur dolor</p>
+                </div>
+
+                <div class="col-md-4">
+                    <h4>Do you like ? Share this !</h4>
+                    <div>
+                        <p>
+                            <a href="https://www.twitter.com" class="fa-icon" title="">
+                                <i class="fa fa-twitter" aria-hidden="true"></i>
+                            </a>
+                            <a href="https://www.facebook.com" class="fa-icon" title="">
+                                <i class="fa fa-facebook" aria-hidden="true"></i>
+                            </a>
+                            <a href="https://www.linkedin.com" class="fa-icon" title="">
+                                <i class="fa fa-linkedin" aria-hidden="true"></i>
+                            </a>
+                        </p>
+                    </div>
+                    <div>
+                        <p><small>© Untitled | Website created with <a href="http://www.mashup-template.com/" title="Create website with free html template">Mashup Template</a>/<a href="https://www.unsplash.com/" title="Beautiful Free Images">Unsplash</a></small></p>
+                    </div>
+
+                </div>
+
+                <div class="col-md-4">
+
+                    <h4>Subscribe to newsletter</h4>
+
+                    <div class="form-group">
+                        <div class="input-group">
+                            <input type="text" class="form-control footer-input-text">
+                            <div class="input-group-btn">
+                                <button type="button" class="btn btn-default btn-newsletter ">OK</button>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+
+
+</body>
+
+</html>

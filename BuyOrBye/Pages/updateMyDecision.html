@@ -1,0 +1,110 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width,initial-scale=1" name="viewport">
+    <meta content="description" name="description">
+    <meta name="google" content="notranslate" />
+    <meta content="Mashup templates have been developped by Orson.io team" name="author">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="../Scripts/ajaxCalls.js"></script>
+    <!-- Disable tap highlight on IE -->
+    <meta name="msapplication-tap-highlight" content="no">
+
+    <link href="../assets/apple-touch-icon.png" rel="apple-touch-icon">
+    <link href="../assets/favicon.ico" rel="icon">
+
+    <title>Title page</title>
+
+    <link href="../main.97292821.css" rel="stylesheet">
+    <style>
+        .card {
+            box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+            transition: 0.3s;
+            width: 40%;
+        }
+
+            .card:hover {
+                box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+            }
+
+        .container {
+            padding: 2px 16px;
+        }
+    </style>
+
+    <script>
+
+        let openDecision = "";
+        let closeDecision = "";
+
+        function init() {
+            let userSend = localStorage.getItem("Email");
+            userSend = JSON.parse(userSend);
+            ajaxCall("GET", `../api/Indecision/getIndecisionByUserEmail`, "UserSend=" + userSend, success, error);
+        }
+
+        function success(data) {
+            console.log(data);
+            for (var user in data) {
+               
+
+                 if (data[user].CurrectAnswerPercent != 1) {
+                    let desc = data[user].Description_;
+                    let indecisionId = data[user].IndecisionID;
+                    let addDesc = `<div class="row-6"><div class="col-xs-12 col-md-3 card" ><img src="img_avatar.png" style="width:100%"><div class="container"><h4><b>description:${desc}</b></h4></div>  <button id="${indecisionId}" onclick="stopIndecision(this.id)"  style="text-align:center" class="btn btn-primary">stop indecision</button><button value="${indecisionId}" onclick="MyFinalIndecision(this.value)"  style="text-align:center" class="btn btn-primary">My Final Answer</button></div></div>`;
+                    openDecision += addDesc;
+                }
+
+            }
+            document.getElementById("openedec").innerHTML = `<div>` + openDecision + `</div><br/></div>`;
+        }
+
+        function stopIndecision(id) {
+
+            data = JSON.stringify(id);
+            localStorage.setItem("IndecisionID", data);
+            document.location.href = "stopIndecision.html";
+        }
+
+        function MyFinalIndecision(id){
+
+             data = JSON.stringify(id);
+            localStorage.setItem("IndecisionID", data);
+            document.location.href = "UserToUser.html";
+
+        }
+
+        function error(err) {
+            console.log(err);
+        }
+
+    </script>
+</head>
+
+<!-- Add your content of header -->
+
+<body onload="init()">
+    <header>
+        <nav class="navbar navbar-default">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="index.html">BuyOrBuy</a>
+                </div>
+                <ul class="nav navbar-nav">
+                    <li class="active"><a href="index.html">Home</a></li>
+                    <li><a href="createIndecision.html">Create New Indecision</a></li>
+                    <li><a href="GroupPage.html">Create New Group</a></li>
+                    <li><a href="PicDecision.html">Friends Indecisions</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+   
+    <div class="row-12"> <h2>open decisions</h2> <br /> <br /></div>
+    <div id="openedec" class="row-12"> </div>
+
+
+</body>
+</html>

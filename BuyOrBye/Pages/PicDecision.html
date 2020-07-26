@@ -1,0 +1,169 @@
+﻿<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width,initial-scale=1" name="viewport">
+    <meta content="description" name="description">
+    <meta name="google" content="notranslate" />
+    <meta content="Mashup templates have been developped by Orson.io team" name="author">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="../Scripts/ajaxCalls.js"></script>
+    <!-- Disable tap highlight on IE -->
+    <meta name="msapplication-tap-highlight" content="no">
+
+    <link href="../assets/apple-touch-icon.png" rel="apple-touch-icon">
+    <link href="../assets/favicon.ico" rel="icon">
+
+    <title>Title page</title>
+
+    <link href="../main.97292821.css" rel="stylesheet">
+
+    <style>
+        .slidecontainer {
+            width: 100%;
+        }
+
+        .slider {
+            -webkit-appearance: none;
+            width: 40%;
+            height: 25px;
+            background: #d3d3d3;
+            outline: none;
+            opacity: 0.7;
+            -webkit-transition: .2s;
+            transition: opacity .2s;
+        }
+
+            .slider:hover {
+                opacity: 1;
+            }
+
+            .slider::-webkit-slider-thumb {
+                -webkit-appearance: none;
+                appearance: none;
+                width: 25px;
+                height: 25px;
+                background: #4CAF50;
+                cursor: pointer;
+            }
+
+            .slider::-moz-range-thumb {
+                width: 25px;
+                height: 25px;
+                background: #4CAF50;
+                cursor: pointer;
+            }
+
+        .card {
+            float: left;
+            padding: 10px;
+            border-style: solid;
+        }
+    </style>
+    <script>
+        idCounter = 0;
+
+
+        tempPrecentageRight = 0;
+
+        function Send_Answer() {
+            finale_answer = 0;
+            console.log("Inside POST Section");
+            let indecisionID = localStorage.getItem("IndecisionID")
+            indecisionID = JSON.parse(indecisionID);
+            let userSend = localStorage.getItem("Email");
+            userSend = JSON.parse(userSend);
+            let groupID = localStorage.getItem("GroupId");
+            groupID = JSON.parse(groupID);
+
+
+            percent_option1 = tempPrecentageRight / 100; //document.getElementById("percent_option1").value;
+            percent_option1 = percent_option1.toFixed(2);
+            percent_option2 = (100 - tempPrecentageRight) / 100;//document.getElementById("percent_option2").value;
+            percent_option2 = percent_option2.toFixed(2);
+
+            console.log("right precent: " + percent_option1 + " Left precent: " + percent_option2 + " ")
+
+            if (percent_option1 >= 0.51) {
+                finale_answer = 1;
+            }//else if(percent_option1 == 0.5) // need to decide how to put extreme action as 50% 50% for each picture
+
+            UserInIndecision = {
+                "IndecisionID": indecisionID,
+                "UserInGroup_emailParticipant": userSend,
+                "UserInGroup_groupID": groupID,
+                "Pic_num": finale_answer,
+                "Percent_option1": percent_option1,
+                "Percent_option2": percent_option2,
+            }
+            ajaxCall("PUT", "../api/UserInIndecision/updateAnswer", JSON.stringify(UserInIndecision), success, error);
+
+
+        }
+
+        function displayPrecent() {
+            tempPrecentageRight = document.getElementById("myRange").value;
+            console.log(tempPrecentageRight);
+        }
+
+        function success(data) {
+            alert("TNX For Your Answer! ");
+            document.location.href = "index.html";
+        }
+        function error(err) {
+            console.log("err", err);
+        }
+
+        function precentUpdater() {
+            var slider = document.getElementById("myRange");
+            tempPrecentageRight = slider.value;
+            document.getElementById("RightPicVal").innerHTML = tempPrecentageRight;
+            document.getElementById("LeftPicVal").innerHTML = (100 - tempPrecentageRight);
+
+            slider.oninput = function () {
+                output.innerHTML = this.value;
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <header>
+        <nav class="navbar navbar-default">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="index.html">BuyOrBuy</a>
+                </div>
+                <ul class="nav navbar-nav">
+                    <li class="active"><a href="index.html">Home</a></li>
+                    <li><a href="myIndecisions.html">My Indecision</a></li>
+                    <li><a href="createIndecision.html">Create New Indecision</a></li>
+                    <li><a href="GroupPage.html">Create New Group</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+    <button onclick="displayPrecent()">Display Precentage division</button>
+    <div class="slidecontainer">
+        <input onchange="precentUpdater()" type="range" min="0" max="100" value="50" class="slider" id="myRange">
+        <!--<input onchange="precentUpdater()" type="range" min="-50" max="50" value="0" class="slider" id="myRange">-->
+        <!--<p>Value: <span id="demo">50</span></p>-->
+    </div>
+    <!--Cards-->
+    <div class="card">
+        <img id="LeftPicValIMG" src="dress_1.png" alt="Avatar" style="width:100%">
+        <div class="container">
+            <p class="prec_display" id="LeftPicVal">50%</p>
+        </div>
+    </div>
+    <div class="card">
+        <img id="RightPicValIMG" src="dress_2.png" alt="Avatar" style="width:100%">
+        <div class="container">
+            <p class="prec_display" id="RightPicVal">50%</p>
+        </div>
+    </div>
+    <button onclick="Send_Answer()">Send</button>
+    <!--Cards-->
+</body>
+</html>
